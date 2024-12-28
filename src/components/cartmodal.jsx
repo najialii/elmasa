@@ -23,8 +23,8 @@ export default function Cart({ isOpen, onClose }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Cart Modal"
-      className="absolute top-0 right-0  z-[1000px] p-6  shadow-lg bg-white w-full max-w-lg max-h-fit"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      className="absolute top-0 right-0 sm:h-scre z-[1000px] p-6  shadow-lg bg-white w-full max-w-lg max-h-fit"
+      overlayClassName="fixed inset-0  backdrop-blur-sm"
     >
       <div className="flex flex-col gap-6 max-w-lg w-full">
         <div className="flex justify-between items-center border-b pb-4">
@@ -47,14 +47,14 @@ export default function Cart({ isOpen, onClose }) {
                 className="flex items-center justify-between gap-4 p-4 border border-l-4 rounded-l-lg border-l-primary rounded-md"
               >
                 <div className="flex gap-4">
-                  <img
-                    src={`http://localhost/masa/storage/uploads${item.image}`}
+                <img
+                    src={JSON.parse(item.img)[0]} 
                     alt={item.title}
-                    className="h-16 w-16 object-cover rounded-md"
+                    className="h-12 w-12 object-cover rounded-md"
                   />
                   <div className="flex flex-col">
                     <h2 className="font-semibold text-lg">{item.name}</h2>
-                    <p className="text-gray-500 text-sm">${item.price}</p>
+                    <p className="text-gray-500 text-sm" dir="rtl">{item.price} ج.م</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ export default function Cart({ isOpen, onClose }) {
           <div className="border-t pt-4">
             <div className="flex justify-between items-center mb-4">
               <span className="text-lg font-semibold text-gray-900">Total:</span>
-              <span className="text-2xl text-primary font-bold">${getCartTotal()}</span>
+              <span className="text-2xl text-primary font-bold" dir="rtl">{getCartTotal()} ج.م</span>
             </div>
             <div className="flex gap-4">
               <button

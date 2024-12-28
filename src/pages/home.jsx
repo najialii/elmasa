@@ -4,7 +4,14 @@ import Pcard from './shopp/pcards';
 import Offers from './shopp/offers';
 import Rcard from '../components/recipiescard';
 import Homerec from './shopp/homrec';
-import { WhatsappLogo } from '@phosphor-icons/react';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { WhatsappLogo, Envelope } from '@phosphor-icons/react';
+import ban from "../assets/imgs/ban3.jpg";
+import masagroup from '../assets/imgs/masagroup.png'
+import partlogo from '../assets/imgs/masa.svg'
+
 
 
 const Home = () => {
@@ -37,24 +44,112 @@ const Home = () => {
       });
   
   }
+  const partnerLogos = [
+    "https://via.placeholder.com/150x100?text=Partner+1",
+    "https://via.placeholder.com/150x100?text=Partner+2",
+    "https://via.placeholder.com/150x100?text=Partner+3",
+    "https://via.placeholder.com/150x100?text=Partner+4",
+    "https://via.placeholder.com/150x100?text=Partner+5",
+  ];
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 1000,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
 
   return (
   <div className="bg-gray-50">
-    <Slideshow />
+<div className="flex flex-col mx-6 mt-5 md:flex-row items-center justify-between  bg-primary text-white clip-arch md:clip-arch-md lg:clip-arch-lg">
+  
+  <div className="w-full md:w-1/3 mb-4 md:mb-0">
+    <img
+      src={masagroup}  
+      alt="Banner"
+      className="w-full h-auto object-cover rounded-lg"
+    />
+  </div>
 
-    {/* Welcome Section */}
-    <div className="p-6 text-center bg-white shadow-lg rounded-lg mx-4 mt-8 relative overflow-hidden">
-      <h1 className="text-5xl font-extrabold text-primaryDark mb-4 relative z-10">Welcome to Elmasa</h1>
-      <p className="text-lg text-gray-700 relative z-10">
-        Discover the quality and range of our powder milk and foodstuff products.
-      </p>
+  <div className="w-full md:w-2/3 pl-0 md:pl-6">
+    <h1 className="text-3xl font-bold mb-4">Welcome to Our Website</h1>
+    <p className="text-lg">
+      This is a description of the website or any other content you would like to display here.
+    </p>
+  </div>
+</div>
+
+{/* <style>
+  {`
+    @layer utilities {
+      .clip-arch {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+      }
+      @media (min-width: 640px) {
+        .clip-arch-md {
+          clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 95%, 0 80%);
+        }
+      }
+      @media (min-width: 1024px) {
+        .clip-arch-lg {
+          clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 90%, 0 75%);
+        }
+      }
+    }
+  `}
+</style> */}
+
+<div className='flex justify-center items-center text-4xl py-[50px]'>
+      العلامات التجارية
+      </div>
+    <div className='grid grid-cols-2 items-center text-2xl font-black text-gray-800'>
+<div className='flex flex-col items-center justify-center w-full h-full  p-6' >
+  <h2>
+  الماسة 
+  </h2>
+<img src={masagroup} className='w-64' alt="" srcset="" />
+</div>
+<div className='flex flex-col items-center justify-center w-full h-full   p-6 ' >
+  <h2>
+  الريان 
+  </h2>
+<img src={masagroup} className='w-64' alt="" srcset="" />
+</div>
+
     </div>
 
-    {/* Recipes Section */}
-    <section className="py-16  relative overflow-hidden">
-      <div className="container mx-auto text-center relative z-10">
-        <h2 className="text-4xl font-bold text-primaryDark mb-8">Delicious Recipes</h2>
-        <Homerec />
+
+    
+    <section className=" py-[50px] overflow-hidden w-full">
+      <div className="container    z-10">
+        <h2 className="text-4xl  text-primary font-extrabold  mb-8">Delicious Recipes</h2>
+        <p>
+        Mouthwatering meals for the whole family to enjoy!
+        </p>
+        {/* <Homerec /> */}
       </div>
       <div className='flex justify-center items-center'>
         <button    className="flex items-center justify-center gap-2 relative h-10 rounded-xl
@@ -66,109 +161,19 @@ const Home = () => {
       </div>
     </section>
 
+
+     
     {/* Promotions Section */}
-    <section className="py-16 Light relative overflow-hidden">
+    {/* <section className="py-16 Light relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white opacity-50"></div>
       <div className="container mx-auto px-6 text-center relative z-10">
         <h2 className="text-4xl font-bold text-secondaryDark mb-8">Our Latest Promotions</h2>
         <Offers />
       </div>
-    </section>
+    </section> */}
 
-    {/* Products Section */}
-    <section className="py-16 bg-white shadow-inner relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white opacity-50"></div>
-      <div className="container mx-auto text-center relative z-10">
-        <h2 className="text-4xl font-bold text-primaryDark mb-8">Buy Our Products</h2>
-        <p className="text-lg text-gray-700 mb-6">
-          Purchase Elmasa products from our trusted shops and enjoy unmatched quality.
-        </p>
-        {/* <Pcard /> */}
-      </div>
-    </section>
+    
 
-    {/* Contact Section */}
-    <section className="text-gray-100  py-16 relative overflow-hidden">
-      {/* <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white opacity-50"></div> */}
-      <div className="container flex flex-col md:flex-row lg:max-w-5xl w-full px-5 mx-auto relative z-10">
-        <div className="md:w-1/2 w-full mb-10 md:mb-0">
-          <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
-          <p className="text-lg leading-relaxed">
-            We're here to assist you! If you have any questions or need assistance, please feel free to reach out to us.
-          </p>
-          <p className="mt-4">
-            You can also email us using VeilMail.io to protect our email from spammers:
-            <a
-              href="https://veilmail.io/irish-geoff"
-              className="text-highlightP font-medium hover:underline ml-2"
-            >
-              Click here to reveal email address
-            </a>
-          </p>
-        </div>
-
-        <div className="md:w-1/2 w-full">
-          <h1 className="text-4xl font-bold mb-6">Contact Form</h1>
-          <form 
-          onSubmit={handleSubmit}
-          action="send-contact.php" method="post">
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-lg mb-2">
-                Your Name
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-3 bg-white rounded-lg border border-gray-300 focus:ring-2 
-                text-gray-800 focus:ring-highlightP focus:outline-none"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-lg mb-2">
-                Your Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full p-3 bg-white text-gray-800 rounded-lg border border-gray-300 focus:ring-2 focus:ring-highlightP focus:outline-none"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="message" className="block text-lg mb-2">
-                Your Message
-              </label>
-              <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                required
-                className="w-full p-3 text-gray-800 bg-white rounded-lg border border-gray-300 focus:ring-2 focus:ring-highlightP focus:outline-none h-32"
-              ></textarea>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="w-full p-3 Dark text-white font-bold rounded-lg hover: focus:ring-2 focus:ring-highlightP focus:outline-none"
-              >
-                Send Message ✉
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-    <div className="flex gap-4 max-sm:flex-col h-32 items-center justify-start text-center  text-white px-6 py-3.5 rounded font-[sans-serif]">
-        <h3 className="text-primary font-md mx-6">send usa a message </h3>
-        <WhatsappLogo size={32} color="#fff0f0" />
-        <div className="flex items-center justify-between space-x-5 bg-white px-4">
-        <div>
-
-        </div>
-        </div>
-      </div>
   </div>
   )
 };

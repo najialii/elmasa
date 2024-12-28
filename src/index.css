@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global Scrollbar Styles */
+@layer base {
+    /* Webkit Browsers (Chrome, Safari, Edge) */
+    ::-webkit-scrollbar {
+      width: 12px; /* Adjust width */
+      height: 12px; /* Adjust height for horizontal scrollbars */
+    }
+  
+    /* Dark Gray Scroll Thumb */
+    ::-webkit-scrollbar-thumb {
+      background-color: #555555; /* Dark gray for the thumb */
+      border-radius: 9999px; /* Rounded thumb */
+    }
+  
+    ::-webkit-scrollbar-track {
+      background-color: #F2F6F5; /* Light color for the track */
+      border-radius: 9999px; /* Rounded track */
+    }
+  
+    /* Firefox */
+    * {
+      scrollbar-width: thin; /* Use a thin scrollbar */
+      scrollbar-color: #555555 #F2F6F5; /* Dark gray thumb, light gray track */
+    }
+  }
+  

@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect , useRef} from 'react';
 /**
  * Custom Hook for Fetching Data with Cleanup
  * @param {string} url - The API endpoint to fetch data from.
@@ -10,6 +9,7 @@ const useFetch = (url, transformData = (data) => data) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const curUrl = useRef(url)
 
   useEffect(() => {
     let isMounted = true;
@@ -23,9 +23,11 @@ const useFetch = (url, transformData = (data) => data) => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const rawData = await response.json();
-        const processedData = transformData(rawData);
-        //console.log(rawData);
-        setData(processedData);
+        if(curUrl.current) {
+          curUrl.current === false
+        }
+        console.log("response",rawData);
+        setData(rawData);
       } catch (err) {
         if (err.name !== 'AbortError') {
           console.error('Error fetching data:', err);
@@ -42,7 +44,7 @@ const useFetch = (url, transformData = (data) => data) => {
       isMounted = false
       abortController.abort();
     };
-  }, [url, transformData]);
+  }, [url]);
 
   return { data, loading, error };
 };

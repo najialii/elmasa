@@ -14,15 +14,19 @@ const Recipes = () => {
   
   const handleGetRecipe = (recipe) => {
     if (recipe) {
-      navigate(`/recipe/${recipe.id}`, { state: { recipe } });
+      
+      navigate(`/recipage/${recipe.id}`, { state: { recipe } });
     } else {
       console.error('Recipe data is not available');
     }
   };
-const {data:recipies, error, loading: pending}= useFetch('http://localhost/masa/api/content/items/recipes?populate=*')
+const {data, error, loading: pending}= useFetch('http://localhost:8000/api/recipes')
+console.log("data from recipies", data)
+// const recipies = data
+// console.log(recipies)
 
  if(pending){
-  return    <div className="h-screen w-screen flex justify-center items-center">
+  return    <div className="h-screen w-screen flex justify-center items-center bg-backGround">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="w-10 animate-[spin_0.8s_linear_infinite] fill-blue-600 block mx-auto"
@@ -38,7 +42,7 @@ const {data:recipies, error, loading: pending}= useFetch('http://localhost/masa/
 
 
   return (
-    <div className="w-w-screen  bg-primary">
+    <div className="w-w-screen  bg-gray-100">
         <div className="relative w-full h-[70vh]">
               <img className="h-full w-full object-cover" src={ban} alt="Banner" />
               <div className="absolute inset-0 bg-gradient-to-b from-primary to-transparent opacity-80"></div>
@@ -54,9 +58,9 @@ const {data:recipies, error, loading: pending}= useFetch('http://localhost/masa/
           <a className="menu-hover my-2 rounded-md text-base font-medium text-primary lg:mx-4">Breakfast</a>
         </div>
       </div>
-<div className='flex justify-center items-center px-20'>
+<div className='flex justify-center items-center '>
 <Rcard
-recipies={recipies}
+data={data}
 handleGetRecipe={handleGetRecipe}
 />
 </div>

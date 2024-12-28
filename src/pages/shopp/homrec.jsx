@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Rcard from '../../components/recipiescard';
+import useFetch from '../../components/hooks/usefetch';
 import Slider from 'react-slick';
 const Homerec = () => {
-  const [recipies, setRecipies] = useState([]);
+
+  
+  
+  const handleGetRecipe = (recipe) => {
+    if (recipe) {
+      navigate(`/recipe/${data.id}`, { state: { recipe } });
+    } else {
+      console.error('Recipe data is not available');
+    }
+  };
+  
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -32,32 +43,14 @@ const Homerec = () => {
       },
     ],
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost/masa/api/content/items/recipes?populate=*');
-        const data = await response.json();
-        console.log(data)
-        if (data && Array.isArray(data)) {
-      
-          setRecipies(data.slice(0, 4)); 
-        }
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  const {data, error, loading: pending}= useFetch('http://localhost:8000/api/recipes')
+  console.log("data from home recipies", data)
 
   return (
-    <div className='flex items-center'>
+    <div className='  '>
       <Rcard 
-
-        recipies={recipies} 
-        handleGetRecipe={(recipe) => {
-          console.log('Recipe selected:', recipe);
-        }} 
-        recipesToShow={4} 
+data={data}
+handleGetRecipe={handleGetRecipe}
       />
     </div>
   );
