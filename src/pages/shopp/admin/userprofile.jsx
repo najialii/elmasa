@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authcontext";
 import { UserGear, UserCircle } from "@phosphor-icons/react";
-
+import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Uprofile = () => {
   const navigate = useNavigate();
   const { user, token, logout } = useAuth();
@@ -17,8 +18,7 @@ const Uprofile = () => {
 
   const handleEdit = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/update", {
-        method: "POST",
+      const response = await axios.post(`${API_BASE_URL}/user/update`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -46,20 +46,20 @@ const Uprofile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/user/me', {
-          method: 'GET',
+        const response = await axios.get(`${API_BASE_URL}/user/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
 
-        if (!response.ok) {
+      
+        if (response.status >= 200 && response.status < 300) {
+          console.log("Fetched Data:", response.data);
+          setData(response.data);
+        } else {
           throw new Error('Failed to fetch data');
         }
-
-        const result = await response.json();
-        setData(result.data); 
       } catch (error) {
         setError(error.message);
       } finally {
@@ -70,51 +70,32 @@ const Uprofile = () => {
     if (token) {
       fetchData();
     }
-  }, [token]);
+  }, [token]); 
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/user/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        logout();
-        navigate("/login");
-      } else {
-        throw new Error("Logout failed");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-      alert("Failed to log out. Please try again.");
-    }
-  };
+ 
 
   return (
     <div className="container ">
-      {data ? (
-        <div className="bg-lime-50 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-          <div className="flex items-center justify-between mb-6 bg-lime-100 p-4 rounded-md">
+      {data  ? (
+        <div className="bg-white w-1/2 p-6 rounded-lg shadow-md shadow-gray-50  mx-auto">
+          <div className="flex items-center  mb-6   p-4 rounded-md">
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 flex justify-center items-center bg-secondaryLight rounded-full">
-                <UserCircle size={32} />
+              <div className="w-12 h-12 flex justify-center items-center  rounded-full">
+                <UserCircle size={40} />
               </div>
-              <h2 className="text-xl font-bold text-gray-800">Welcome back, {data.name}</h2>
+              <h2 className="text-3xl font-bold text-gray-800">Welcome back, {data.name}</h2>
             </div>
           </div>
-          <div className="space-y-4 mb-6">
-            <div className="flex justify-between text-lg">
+          <div className="space-y-4 mb-6 grid grid-cols-2">
+            <div className="flex  text-lg">
               <span className="text-gray-600">Email:</span>
               <span className="font-semibold text-gray-800">{data.email}</span>
             </div>
-            <div className="flex justify-between text-lg">
+            <div className="flex  text-lg">
               <span className="text-primary">Phone:</span>
               <span className="font-semibold text-gray-800">{data.phone}</span>
             </div>
-            <div className="flex justify-between text-lg">
+            <div className="flex  text-lg">
               <span className="text-primary">Address:</span>
               <span className="font-semibold text-gray-800">{data.address}</span>
             </div>
@@ -169,7 +150,7 @@ const Uprofile = () => {
                       className="w-full p-2 border rounded-md"
                     />
                   </div>
-                  <div className="flex justify-between mt-6">
+                  <div className="flex  mt-6">
                     <button
                       type="submit"
                       className="bg-primary text-white px-4 py-2 rounded-md"

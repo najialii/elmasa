@@ -69,7 +69,7 @@ const Pcard = ({ products,   }) => {
           } catch (error) {
             console.error('Invalid JSON format for images:', product.img);
           }
-          // console.log("immmmmmmmmmmmmmmmm", "http://localhost:8000/storage/"+ JSON.parse(product.img))
+          // console.log("immmmmmmmmmmmmmmmm", "https://elmasafoods.com//storage/"+ JSON.parse(product.img))
 
           const productQuantity = productCounts[product.id] || 0;
 
@@ -88,10 +88,10 @@ const Pcard = ({ products,   }) => {
         const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
         return imageUrl.startsWith("http")
           ? imageUrl
-          : `http://localhost:8000/storage/${imageUrl}`;
+          : `https://elmasafoods.com//storage/${imageUrl}`;
       } catch (error) {
         console.error("Invalid JSON format for images:", product.img);
-        return "http://localhost:8000/storage/default-image.jpg"; 
+        return "https://elmasafoods.com//storage/default-image.jpg"; 
       }
     })()
   }

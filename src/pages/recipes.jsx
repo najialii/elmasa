@@ -14,6 +14,7 @@ const Recipes = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loadMore , setLoadMorw] = useState(true)
 
   useEffect(() => {
     const fetchRecipes = async () => {

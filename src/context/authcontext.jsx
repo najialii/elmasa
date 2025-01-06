@@ -1,6 +1,8 @@
+import axios from "axios";
 import { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -9,99 +11,109 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(localStorage.getItem("role") || "user"); 
   const navigate = useNavigate();
 
-  console.log()
+
 
   
   const login = async (email, password) => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/login", {
-        method: "POST",
+      const response = await axios.post(`${API_BASE_URL}/user/login`, {
+        email,
+        password,
+      }, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
       });
   
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-  
-      const data = await response.json();
+      const data = response.data;
       console.log(data);
   
       if (data.token) {
         setUser(data.user);
-        setUser(data.name);
-        setUser(data.user.email);
         setToken(data.token);
         setRole(data.user.role);
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.user.role);
   
-      
+
         switch (data.user.role) {
           case "admin":
             navigate("/dashboard/chart");
             break;
-  
           case "user":
-            navigate("/");
+            navigate("/home");
             break;
-  
           default:
-            navigate("/");
+            navigate("/home");
             break;
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error during login:", error.response?.data || error.message);
     }
   };
   
   const register = async (username, email, password, address, phone) => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/register", {
-        method: "POST",
+      const response = await axios.post(`${API_BASE_URL}/user/register`, {
+        name: username,
+        email,
+        password,
+        address,
+        phone,
+      }, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: username, email, password, address, phone }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Backend Error:", errorData);
-        throw new Error(errorData.message || "Registration failed");
-      }
-
-      const data = await response.json();
+  
+      const data = response.data; 
       console.log("Registration Successful:", data);
-
+  
       if (data.token) {
         setUser(data.user);
         setToken(data.token);
-        setRole(data.user.role); 
+        setRole(data.user.role);
         localStorage.setItem("token", data.token);
-        localStorage.setItem("role", data.user.role); 
+        localStorage.setItem("role", data.user.role);
         navigate("/");
       }
     } catch (error) {
-      console.error("Error during registration:", error.message);
+      console.error("Error during registration:", error.response?.data || error.message);
     }
   };
-
+  
 
 
   
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    setRole("user"); 
-    localStorage.removeItem("token");
-    localStorage.removeItem("role"); 
-    navigate("/login");
+  const logout = async () => {
+    try {
+      if (token) {
+        await axios.post(
+          `${API_BASE_URL}/user/logout`, // Ensure this matches your backend endpoint
+          {}, // Pass an empty body if required
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error during logout:", error.response?.data || error.message);
+    } finally {
+      // Clear client-side data and navigate to login page
+      setUser(null);
+      setToken(null);
+      setRole("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/login");
+    }
   };
-  console.log("the user is",user)
+  
+  
 
   return (
     <AuthContext.Provider value={{ user, token, role, login, register, logout }}>

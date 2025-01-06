@@ -15,10 +15,10 @@ const Header = () => {
   const [colorChange, setColorChange] = useState(false);
   const [activeLink, setActiveLink] = useState("/");
   const { user, token } = useAuth();
-  console.log("user data:", user);
+  // console.log("user data:", user);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  console.log("hhhhhhhhhhhhhhhhhhhhh",searchResults);
+  // console.log("hhhhhhhhhhhhhhhhhhhhh",searchResults);
 
   const handleSearch = async (query) => {
     try {
@@ -65,6 +65,10 @@ const Header = () => {
     }
   };
 
+
+ 
+
+  
   return (
     <div>
       <header
@@ -191,8 +195,8 @@ const Header = () => {
                   </div>
                 ) : (
                   <Link to="/login">
-                    <span>
-                      <SignIn size={24} color="#214C4F" weight="fill" />
+                    <span className='flex items-center bg-gradient-to-b from-blue-300 to-white  p-2 rounded-md space-x-2'>
+                      <SignIn size={26} color="#214C4F" weight="fill" />
                     </span>
                   </Link>
                 )}

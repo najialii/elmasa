@@ -5,9 +5,10 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { MapPin, Phone , HandArrowDown, SealCheck, ShoppingBag} from "@phosphor-icons/react";
 import bank from '../../assets/imgs/bankakk.svg';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const IMG_BASE_URL = import.meta.env.VITE_IMAGE_STORAGE_URL
 export default function Checkout() {
   const { cartItems, clearCart } = useContext(CartContext);
   const { token } = useAuth();
@@ -188,7 +189,7 @@ export default function Checkout() {
                   const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg;
                   return imageUrl.startsWith("http")
                     ? imageUrl
-                    : `http://localhost:8000/storage/${imageUrl}`;
+                    : `${IMG_BASE_URL}/${imageUrl}`;
                 } catch (error) {
                   console.error("Invalid JSON format for images:", item.img);
                   return "http://localhost:8000/storage/default-image.jpg";
@@ -461,7 +462,9 @@ className="mb-12 flex bg-b  max-w-screen-lg w-full py-4 px-4  rounded-lg shadow-
         onClick={() => {setIsSuccess(false)}}
         className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primaryDark transition-all"
         >
+          <Link to={'/dashboard/uorders'}>
     تتبع الطلب
+          </Link>
       </button>
         </div>
     </div>

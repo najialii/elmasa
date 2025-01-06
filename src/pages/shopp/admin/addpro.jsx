@@ -4,7 +4,7 @@ import { Image } from '@phosphor-icons/react';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import axios from 'axios';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function AddProduct() {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -29,8 +29,8 @@ function AddProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const brandsResponse = await fetch('http://localhost:8000/api/brand/list');
-        const categoriesResponse = await fetch('http://localhost:8000/api/categories');
+        const brandsResponse = await fetch(`${API_BASE_URL}/brand/list`);
+        const categoriesResponse = await fetch(`${API_BASE_URL}/categories`);
 
         const brandsData = await brandsResponse.json();
         const categoriesData = await categoriesResponse.json();
@@ -82,7 +82,7 @@ function AddProduct() {
       //   body: formData,
       // });
 
-      const response = await axios.post("http://localhost:8000/api/products/add",formData,{
+      const response = await axios.post(`${API_BASE_URL}/products/add`,formData,{
         headers:{
           'Content-Type': 'multipart/form-data',
                'Authorization': `Bearer ${token}`

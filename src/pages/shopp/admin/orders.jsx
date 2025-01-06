@@ -20,6 +20,7 @@ const Ordersadmin = () => {
   const [links, setLinks] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
   const [search, setSearch] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
   const { token } = useAuth();
 
   console.log("the orders", orders);
@@ -52,18 +53,17 @@ useEffect(() => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/orders/list?page=${currentpage}`, {
-          method: "GET",
+        const response = await axios.get(`${API_BASE_URL}/orders/list?page=${currentpage}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
 
-        if (response.ok) {
+        if (response.status = 200) {
           setLoading(false);
-          const result = await response.json();
-          console.log(result);
+          const result = await response.data
+          console.log("herherheihishroisa",result.data);
           if (result && result.data && Array.isArray(result.data.data)) {
             setOrders(result.data.data);
           } else {
@@ -291,7 +291,7 @@ useEffect(() => {
 
       {selectedOrder && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+          <div className="bg-white p-6 rounded-lg shadow-md shadow-gray-50 w-full max-w-lg">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Order Details</h2>
               <p className="flex flex-col">
@@ -323,6 +323,7 @@ useEffect(() => {
                 <p className="flex flex-col text-sm"><strong>Phone Number:</strong> {selectedOrder.phone}</p>
                 <p className="flex flex-col text-sm"><strong>Customer Name:</strong> {selectedOrder.user.name}</p>
                 <p className="flex flex-col text-sm"><strong>city:</strong> ${selectedOrder.city.name}</p>
+                <p className="flex flex-col text-sm"><strong>Address</strong> ${selectedOrder.address}</p>
               </div>
               <div className="flex flex-col mt-4">
                 <div>

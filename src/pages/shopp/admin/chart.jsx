@@ -79,7 +79,7 @@ const OverviewPage = () => {
 
   const getTotalRevenueForPeriod = async (start, end) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/orders/date/${start}/${end}`, {
+      const response = await axios.get(`${API_BASE_URL}/orders/date/${start}/${end}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ const OverviewPage = () => {
 
   const getRevenuePerCategory = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenuePerCategory', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenuePerCategory`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -112,7 +112,7 @@ const OverviewPage = () => {
 
   const getRevenuePerCity = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenuePerCity', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenuePerCity`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +126,7 @@ const OverviewPage = () => {
 
   const getTotalRevenue = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenue', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenue`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

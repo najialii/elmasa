@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/authcontext";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import axios from "axios";
 
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Brand() {
     const [brands, setBrands] = useState([]);
     const { token } = useAuth();
@@ -14,11 +15,11 @@ function Brand() {
     useEffect(() => {
         const fetchBrands = async () => {
             try {
-                const response = await fetch("http://localhost:8000/api/brand/list");
-                const data = await response.json();
+                const response = await axios.get(`${API_BASE_URL}/brand/list`);
+                const data = await response;
                 console.log("Fetched brands:", data);
                 setLoading(false);
-                setBrands(Array.isArray(data.data) ? data.data : []);
+                setBrands(Array.isArray(response.data.data) ? response.data.data : []);
             } catch (error) {
                 console.error("Error fetching brands:", error);
             }
@@ -31,14 +32,15 @@ function Brand() {
         const brand = { name };
         console.log(brand);
         try {
-            const response = await fetch("http://localhost:8000/api/brand/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(brand)
-            });
+            const response = await axios.post(
+                `${API_BASE_URL}/brand/create`,
+                brand,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                    },
+                }
+            );
 
 
             if (!response.ok) {
@@ -59,7 +61,7 @@ function Brand() {
                   });
             setBrands([...brands, data]);
             setName("");
-            // fetchBrands();
+            fetchBrands();
         } catch (error) {
             console.error("Error:", error);
         }
@@ -74,8 +76,7 @@ function Brand() {
         e.preventDefault();
         const updatedBrand = { name };
         try {
-            const response = await fetch(`http://localhost:8000/api/brand/update/${editBrands}`, {
-                method: "POST",
+            const response = await axios.post(`${API_BASE_URL}/brand/update/${editBrands}`, {
                 headers: {
                     "Content-Type": "application/json",
                     

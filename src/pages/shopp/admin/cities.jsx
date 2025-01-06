@@ -3,7 +3,7 @@ import { useAuth } from '../../../context/authcontext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Cities() {
-    const [cities, setCities] = useState([]);
+    const  [cities, setCities] = useState([]);
     const [editCity, setEditCity] = useState(null);
     const [name, setName] = useState("");
     const [price, setPrice] = useState(0);
@@ -67,7 +67,7 @@ function Cities() {
         e.preventDefault();
         const updatedCity = { name, price: Number(price) };
         try {
-            const response = await fetch(`http://localhost:8000/api/city/update/${editCity}`, {
+            const response = await fetch(`${API_BASE_URL}/update/${editCity}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

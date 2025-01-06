@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../../../context/authcontext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,Area,Line,  ResponsiveContainer, PieChart, Pie, Cell, Legend,ComposedChart  } from "recharts";
-  
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Reports() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -22,7 +22,7 @@ function Reports() {
   // Fetch revenue per category
   const getRevenuePerCategory = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenuePerCategory', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenuePerCategory`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -37,7 +37,7 @@ function Reports() {
   // Fetch total revenue for a period
   const getTotalRevenueForPeriod = async (start, end) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/orders/date/${start}/${end}`, {
+      const response = await axios.get(`${API_BASE_URL}/orders/date/${start}/${end}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -56,7 +56,7 @@ function Reports() {
 
   const getTotalRevenue = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenue', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenue`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -71,7 +71,7 @@ function Reports() {
   // Fetch revenue per city
   const getRevenuePerCity = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/orders/revenuePerCity', {
+      const response = await axios.get(`${API_BASE_URL}/orders/revenuePerCity`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

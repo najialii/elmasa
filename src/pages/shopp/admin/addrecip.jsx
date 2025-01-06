@@ -4,9 +4,11 @@ import { Image } from "@phosphor-icons/react";
 import axios from "axios";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Addrecip() {
   const { token } = useAuth();
+  const [file , setFile] = useState()
   const [recipeName, setRecipeName] = useState('');
   const [recipeDescription, setRecipeDescription] = useState('');
   const [recipeImage, setRecipeImage] = useState(null);
@@ -15,7 +17,20 @@ function Addrecip() {
   const [recipedescription, setrecipedescription] = useState('');
   const [recipeInstructions, setRecipeInstructions] = useState('');
   const [recipeProduct, setProduct] = useState([]);
+  const [products , setProducts] = useState([])
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
+
+
+  const handleImgChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setRecipeImage(file);
+      setImagePreview(URL.createObjectURL(file)); 
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +45,7 @@ function Addrecip() {
     formData.append('product_id', 69);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/recipes/create', formData, {
+      const response = await axios.post(`${API_BASE_URL}/recipe/create`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -64,6 +79,20 @@ function Addrecip() {
       console.error('Error:', error);
     }
   };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/products`);
+      const productList = response.data.products.data; 
+      setProducts(productList); 
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <>
@@ -107,6 +136,21 @@ function Addrecip() {
                 value={recipeInstructions}
                 onChange={(e) => setRecipeInstructions(e.target.value)}
               />
+
+              <label htmlFor="productSelect">Product</label>
+              <select
+                id="productSelect"
+                value={selectedProduct}
+                onChange={(e) => setSelectedProduct(e.target.value)}
+                className="shadow bg-gray-100 focus:bg-white border rounded w-full py-2 px-3"
+              >
+                <option value="">Select a product</option>
+                {products.map((product) => (
+                  <option key={product.id} value={product.id}>
+                    {product.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -124,7 +168,10 @@ function Addrecip() {
 
             <div className="flex flex-col mt-6 p-6 bg-gray-100 sm:flex-row items-center gap-4 w-full">
               <div className="flex flex-col w-full sm:w-1/2">
-                <label htmlFor="serving" className="block text-gray-700 text-sm font-bold mb-2">
+                <label
+                  htmlFor="serving"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
                   Serving
                 </label>
                 <input
@@ -137,7 +184,10 @@ function Addrecip() {
               </div>
 
               <div className="flex flex-col w-full sm:w-1/2">
-                <label htmlFor="timeInMin" className="block text-gray-700 text-sm font-bold mb-2">
+                <label
+                  htmlFor="timeInMin"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
                   Time in Minutes
                 </label>
                 <input
@@ -160,23 +210,21 @@ function Addrecip() {
             Add Recipe
           </button>
         </div>
-
-        
       </form>
-  
-            <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-            transition={Bounce}
-          />
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 }

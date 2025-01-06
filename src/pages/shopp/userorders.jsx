@@ -4,7 +4,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { EyeClosed, ArrowLeft , ArrowRight } from "@phosphor-icons/react";
 import axios from "axios";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function OrderHistory() {
   const { user, token } = useAuth();  
   const [orders, setOrders] = useState([]); 
@@ -37,7 +37,7 @@ export default function OrderHistory() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/order/list", {
+        const response = await axios.get(`${API_BASE_URL}/order/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -3,22 +3,26 @@ import { useAuth } from '../../../context/authcontext';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Addcat() {
     const [catName, setCatName] = useState("");
     const [categories, setCategories] = useState([]);
+    const [catImg, setCatImg] = useState(null)
     const { token } = useAuth();
     const [loading, setLoading] = useState(true);   
 
+
     const handleCreateCat = async (e) => {
         e.preventDefault();
-        const cat = { name: catName };
+        const cat = { name: catName,
+            img : catImg, 
+         };
         console.log(cat);
         try {
-            const response = await axios.post("http://localhost:8000/api/category/add", cat, {
+            const response = await axios.post(`${API_BASE_URL}/category/add`, cat, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 }
             });
             toast.success('Category added successfully!', {
@@ -39,11 +43,21 @@ function Addcat() {
         }
     };
 
+    const handleImageChange = (e) => {
+        e.preventDefault
+        console.log(e.target.files[0])
+        setCatImg(e.target.files[0]);
+        // const file = e.target.files[0];
+        // if (file) {
+        //   setFileName(file.name);
+        // }
+      };
+
     useEffect(() => {
         const fetchCategories = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:8000/api/categories");
+                const response = await axios.get(`${API_BASE_URL}/categories`);
                 const data = response.data;
                 console.log("Fetched categories:", data);
                 setCategories(Array.isArray(data.data.data) ? data.data.data : []);
@@ -73,14 +87,26 @@ function Addcat() {
     return (
         <div>
             <div>
-                <form onSubmit={handleCreateCat} action="">
-                    <label htmlFor="name">Name EN</label>
+                <form className='grid grid-cols-1 lg:grid-cols-1 gap-4 my-4' onSubmit={handleCreateCat} action="">
+                  
+                  <div>
+                      <label className='cursor-pointer text-secondaryDark text-sm font-medium' htmlFor="name">Name EN</label>
                     <input
                         className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
                         value={catName}
                         onChange={(e) => setCatName(e.target.value)}
                         type="text"
                     />
+</div>
+
+<div>
+
+<label className='cursor-pointer text-secondaryDark text-sm font-medium'>add Category  image </label>
+                   <input type="file"
+                   onChange={handleImageChange}
+                   className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+                   />
+                   </div>
                     
                     <div className='mt-4 flex justify-end w-full'>
                         <button className='bg-primary text-white p-2 rounded-md'>
