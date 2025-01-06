@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/authcontext';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Cities() {
     const [cities, setCities] = useState([]);
     const [editCity, setEditCity] = useState(null);
@@ -16,7 +18,7 @@ function Cities() {
         }
         const city = { name, price: Number(price) };
         console.log(city);
-        fetch("http://localhost:8000/api/city/add", {
+        fetch(`${API_BASE_URL}/city/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,7 +46,7 @@ function Cities() {
     useEffect(() => {
         const fetchCities = async () => {
             try {
-                const response = await fetch("http://localhost:8000/api/city/list");
+                const response = await fetch(`${API_BASE_URL}/city/list`);
                 const data = await response.json();
                 console.log("Fetched cities:", data);
                 setCities(Array.isArray(data.data) ? data.data : []);
@@ -117,7 +119,7 @@ function Cities() {
 
             <div className="overflow-x-scroll max-h-[450px] rounded-lg shadow-lg">
                 <table className="min-w-full  table-auto border-collapse border border-gray-300">
-                    <thead className='bg-gray-100 sticky top-0 text-gray-800 text-sm'>
+                    <thead className='bg-gray-100 sticky top-0 text-gray-800 text-sm    '>
                         <tr>
                             <th className="border px-6 py-3 text-left">ID</th>
                             <th className="border px-6 py-3 text-left">Name</th>

@@ -31,7 +31,9 @@ import Brand from '../pages/shopp/admin/brand';
 import Cities from '../pages/shopp/admin/cities';
 import Addcat from '../pages/shopp/admin/addcat';
 import Recipage from './recipage';
+import Reports from '../pages/shopp/admin/reports/reports';
 const AppRoutes = () => (
+  
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -40,10 +42,10 @@ const AppRoutes = () => (
   >
     
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/products" element={<Products />} />
       <Route path="/recipes" element={<Recipes />} />
-      <Route path="/recipage" element={<Recipage />} />
+      <Route path="/recipe/:id" element={<Recipage />} />
       <Route path="/social-responsibility" element={<SocialResponsibility />} />
       <Route path="/team" element={<Team />} />
       <Route path="/about-us" element={<AboutUs />} />
@@ -60,6 +62,7 @@ const AppRoutes = () => (
         <Route index element={<div>Welcome to the Dashboard</div>} />
         <Route path="orders" element={<Ordersadmin />} />
         <Route path="chart" element={<OverviewPage />} />
+        <Route path="reports" element={<Reports />} />
         <Route path="storage" element={<Warehouse />} />
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="addrecipe" element={<Addrecip />} />

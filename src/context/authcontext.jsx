@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(localStorage.getItem("role") || "user"); 
   const navigate = useNavigate();
 
-  console.log("how to ", user)
+  console.log()
 
   
   const login = async (email, password) => {

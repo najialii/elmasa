@@ -3,7 +3,8 @@
   import { useNavigate } from "react-router-dom";
   import { Star,Lightning } from "@phosphor-icons/react";
   import { WhatsappLogo,ArrowRight,ArrowLeft } from "@phosphor-icons/react";
-
+import axios from "axios";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const CategoryProducts = () => {
     const [category1Products, setCategory1Products] = useState([]);
     const [category2Products, setCategory2Products] = useState([]);
@@ -13,15 +14,15 @@
 
     const fetchCategoryProducts = async (categoryId, setCategoryProducts) => {
       try {
-        const response = await fetch(`http://localhost:8000/api/products?cid=${categoryId}`);
-        const data = await response.json();
-        console.log("the data",data)
-        setCategoryProducts(data?.products?.data.slice(0, 5)); 
-        console.log(data)
+        const response = await axios.get(`${API_BASE_URL}/products?cid=${categoryId}`);
+        console.log("Response data:", response.data);
+        
+        setCategoryProducts(response.data?.products?.data.slice(0, 5)); 
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+    
 
     useEffect(() => {
       const fetchAllProducts = async () => {
@@ -43,44 +44,44 @@
 
     if (loading) {
       return (
-        <div className="h-screen w-screen flex justify-center items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-10 animate-spin text-blue-600"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z" />
-          </svg>
+        <div className="flex justify-center items-center h-screen w-screen">
+          <div className="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       );
     }
 
     return (
-      <div>
+      <div className="mt-8 lg:mx-12">
 
-      <div className='bg-backGround w-full h-12 mb-4'>
-        <div className='flex items-center my-2'>
+      <div dir="rtl" className=' w-full h-12 mb-4 '>
+        <div className='flex flex-col items-start justify-end mt-8'>
           <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Star size={20} color="#214C4F" /> Featured
+            <Star size={20} color="#214C4F" /> فئة مميزة
           </h2>
         </div>
       </div>
     
-      <div className="bg-backGround p-2 relative">
+      <div className=" p-2 relative">
       
-        <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
+        {/* <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowLeft size={20} color="#fff" />
         </button>
         
         <button className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowRight size={20} color="#fff" />
-        </button>
+        </button> */}
     
         <Pcard products={{ products: { data: category2Products } }} />
         
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-center my-8">
           <button
-            className="bg-secondaryLight text-white px-4 py-2 rounded-lg shadow-md hover:bg-secondary transition"
+            className="bg-secondaryLight text-white px-6 text-xl py-2 rounded-lg shadow-md hover:bg-secondary transition"
             onClick={() => handleCategoryClick(1)}
           >
             Show More
@@ -123,34 +124,34 @@
 </section> */}
     
       
-      <div className='bg-backGround w-full h-12 mb-4'>
-        <div className='flex items-center my-2'>
+    <div dir="rtl" className=' w-full h-12 mb-4 '>
+        <div className='flex flex-col items-start justify-end mt-8'>
           <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Lightning size={20} color="#214C4F" /> Featured
+            <Star size={20} color="#214C4F" /> فئة مميزة
           </h2>
         </div>
       </div>
     
-      <div className="bg-backGround p-2 relative">
-        <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
+      <div className=" p-2 relative">
+        {/* <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowLeft size={20} color="#fff" />
         </button>
         
         <button 
         className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowRight size={20} color="#fff" />
-        </button>
+        </button> */}
     
        
-        <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-l from-white via-transparent to-white opacity-50 pointer-events-none"></div>
+        {/* <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-l from-white via-transparent to-white opacity-50 pointer-events-none"></div> */}
     
        
         <Pcard products={{ products: { data: category3Products } }} />
         
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-center my-8">
           <button
             className="bg-secondaryLight text-white px-4 py-2 rounded-lg shadow-md hover:bg-secondary transition"
-            onClick={() => handleCategoryClick(1)}
+            onClick={() => handleCategoryClick(2)}
           >
             Show More
           </button>
@@ -158,33 +159,33 @@
       </div>
     
       {/* Third Section */}
-      <div className='bg-backGround w-full h-12 mb-4'>
-        <div className='flex items-center my-2'>
+      <div dir="rtl" className=' w-full h-12 mb-4 '>
+        <div className='flex flex-col items-start justify-end mt-8'>
           <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Star size={20} color="#214C4F" /> Featured
+            <Star size={20} color="#214C4F" /> فئة مميزة
           </h2>
         </div>
       </div>
     
-      <div className="bg-backGround p-2 relative">
+      <div className=" p-2 ">
         
-        <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
+        {/* <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowLeft size={20} color="#fff" />
         </button>
         
         <button className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowRight size={20} color="#fff" />
         </button>
-    
+     */}
       
-        <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-l from-white via-transparent to-white opacity-50 pointer-events-none"></div>
+        {/* <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-l from-white via-transparent to-white opacity-50 pointer-events-none"></div> */}
    
         <Pcard products={{ products: { data: category1Products } }} />
         
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-center my-8">
           <button
             className="bg-secondaryLight text-white px-4 py-2 rounded-lg shadow-md hover:bg-secondary transition"
-            onClick={() => handleCategoryClick(1)}
+            onClick={() => handleCategoryClick(3)}
           >
             Show More
           </button>

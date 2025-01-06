@@ -3,9 +3,10 @@ import { useAuth } from "../../context/authcontext";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { EyeClosed, ArrowLeft , ArrowRight } from "@phosphor-icons/react";
+import axios from "axios";
 
 export default function OrderHistory() {
-  const { user } = useAuth();  
+  const { user, token } = useAuth();  
   const [orders, setOrders] = useState([]); 
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,29 +26,25 @@ export default function OrderHistory() {
     setSelectedOrder(null);
   };
 
-  const handelNextPage =()=>{
+  const handelNextPage =()=> {
     setCurrentPage((prevPage)=> prevPage + 1) 
-  
   }
-  const handelprevPage =()=>{
+
+  const handelprevPage =()=> {
     setCurrentPage((prevPage)=> prevPage - 1) 
-    
   }
+
   useEffect(() => {
     const fetchOrders = async () => {
-  
-
       try {
-        const response = await fetch(`http://localhost:8000/api/order/list?page=${currentpage}`, {
-          method: "GET",
+        const response = await axios.get("http://localhost:8000/api/order/list", {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         });
 
-        if (response.ok) {
-          const result = await response.json();
+        if (response.status === 200) {
+          const result = response.data;
           console.log(result)
           if (result && result.data && Array.isArray(result.data.data)) {
             setOrders(result.data.data);
@@ -55,7 +52,7 @@ export default function OrderHistory() {
             setErrorMessage("Failed to fetch orders.");
           }
         } else {
-          const errorMessage = await response.text();
+          const errorMessage = response.statusText;
           setErrorMessage("Failed to fetch orders");
           toast.error("🦄 " + errorMessage, {
             position: "top-center",
@@ -76,14 +73,14 @@ export default function OrderHistory() {
     };
 
     fetchOrders();
-  }, [currentpage]);
+  }, [currentpage, token]);
 
   if(orders.length === 0){
     console.log("nbasasdajfosh")
   }
 
   return (
-    <div className="cont ainer w-full py-8 px-4">
+    <div className="container w-full py-8 px-4">
       {errorMessage ? (
         <p className="text-red-500 text-center text-xl">{errorMessage}</p>
       ) : Array.isArray(orders) && orders.length === 0 ? (
@@ -97,7 +94,7 @@ export default function OrderHistory() {
                 <th className="px-4 py-3 text-left text-sm font-semibold">Placed On</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold">Status</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold">Total Price</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold">Actions</th>
+                   <th className="px-4 py-3 text-left text-sm font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 max-h-96">
@@ -105,7 +102,20 @@ export default function OrderHistory() {
                 <tr key={order.id} className="border-b hover:bg-gray-50 transition-all">
                   <td className="px-4 py-4 text-sm font-medium">{order.order_number}</td>
                   <td className="px-4 py-4 text-sm">{new Date(order.created_at).toLocaleDateString()}</td>
-                  <td className="px-4 py-4 text-sm">{order.status}</td>
+                  <td className="px-4 py-4 text-sm">
+                  <button
+    className={`px-4 py-2 text-white rounded-md font-semibold ${
+      order.status === "delivered"
+        ? "bg-green-400 hover:bg-green-500 font-bold"
+        : order.status === "paid"
+        ? "bg-orange-400 hover:bg-orange-500"
+        : "bg-gray-400 hover:bg-gray-500"
+    }`}
+  >
+    
+    {order.status}
+  </button>
+                  </td>
                   <td className="px-4 py-4 text-sm font-semibold">${order.total_price}</td>
                   <td className="px-4 py-4">
                     <button 
@@ -124,42 +134,117 @@ export default function OrderHistory() {
 
       {isModalOpen && selectedOrder && (
         <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full">
+          <div className=" bg-white p-6 rounded-lg max-w-md w-full">
+            <div className="flex justify-between">
+
+
+<div className="flex flex-col w-full max-h-12">
+
             <h2 className="text-xl  font-bold mb-4 text-primary">Full Order Details</h2>
-            <div className="text-gray-700">
-              <div className="font-medium ">Order Total: ${selectedOrder.total_price}</div>
-              <div className="mt-2">
-                <p>Shipping Address: {selectedOrder.address}</p>
-                <p>Order Date: {new Date(selectedOrder.created_at).toLocaleDateString()}</p>
-                <ul className="mt-4 lg:max-h-64 max-h-56 overflow-y-scroll">
-                  {selectedOrder.items && selectedOrder.items.map((item) => (
-                    <li key={item.id} className="border-b py-2">
-                      <div>
-                      <img
-                    src={JSON.parse(item.product.img)[0]} 
-                    alt={item.title}
-                    className="h-12 w-12 object-cover rounded-md"
-                  />
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{item.product.name}</span>
-                        <span>Qty: {item.qty}</span>
-                      </div>
-                      <div className="flex  font-bold justify-between">
-                        <span>Price: ${item.price}</span>
-                        <span>Total: ${item.qty * item.price}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+</div>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4 w-full sm:w-auto"
+            
+            className={`px-2 py-2 text-white rounded-md font-bold text-sm ${
+              selectedOrder.status === "delivered"
+                ? "bg-green-400 hover:bg-green-500 "
+                : selectedOrder.status === "paid"
+                ? "bg-orange-400 hover:bg-orange-500"
+                : "bg-gray-400 hover:bg-gray-500"
+            }`} >             
+              {selectedOrder.status}
+              
+              </button>
+            </div>
+                
+
+            <ul className="mt-4 lg:max-h-64 max-h-56 overflow-y-scroll">
+  {selectedOrder.items && selectedOrder.items.map((item) => (
+    <li key={item.id} className="bg-white hover:bg-gray-100 rounded-md shadow-md my-2 max-h-20 h-20 py-2 px-4 flex items-center justify-between">
+      <div className="flex items-center justify-center w-1/4">
+      <img
+  src={
+    (() => {
+      try {
+        const parsedImg = JSON.parse(item.img); 
+        const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
+        return imageUrl.startsWith("http")
+          ? imageUrl
+          : `http://localhost:8000/storage/${imageUrl}`;
+      } catch (error) {
+        console.error("Invalid JSON format for images:", item.img);
+        return "http://localhost:8000/storage/default-image.jpg"; 
+      }
+    })()
+  }
+  alt={item.name}
+  className="w-20 rounded-md mb-4"
+/>
+          
+      </div>
+      
+      <div className="flex flex-col items-center justify-center w-1/2">
+        <span className="text-xl font-medium">{item.product.name}</span>
+   
+      </div>
+      
+      <div className="flex flex-col items-end justify-center w-1/4">
+        <span className="text-xl font-semibold">{item.price}</span>
+        <span className="text-sm">Qty: {item.qty}</span>
+        {/* <span className="text-sm font-semibold">Total: ${item.qty * item.price}</span> */}
+      </div>
+    </li>
+  ))}
+</ul>
+
+
+            <div className="text-gray-700  items-center justify-around">
+            
+
+            <div className="mt-6">
+  {/* Order Date */}
+  <p className="flex justify-between ">
+    <span className="text-sm font-medium text-gray-700">Order Date</span>
+    <span className="text-xl font-extrabold text-gray-900">
+      {new Date(selectedOrder.created_at).toLocaleDateString()}
+    </span>
+  </p>
+
+  {/* Address */}
+  <p className="text-gray-900 flex justify-between text-sm mb-6 mt-4">
+    <span className="text-sm font-medium text-gray-700">Address</span>
+    <span className="text-xl font-extrabold text-gray-900">
+      {selectedOrder.address}
+    </span>
+  </p>
+
+  {/* Phone Number */}
+  <p className="text-gray-900 flex justify-between text-sm">
+    <span className="text-sm font-medium text-gray-700">Phone Number</span>
+    <span className="text-xl font-extrabold text-gray-900">
+      {selectedOrder.order_number}
+    </span>
+  </p>
+</div>
+
+            </div>
+
+            <div className="mt-2 flex justify-between">
+
+<div className="font-medium ">Order Total</div>
+<p className="text-3xl text-primary font-extrabold ">
+${selectedOrder.total_price}
+</p>
+ 
+</div>
+            <div className="flex justify-end w-full mt-4">
+
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 w-32 sm:w-auto"
               onClick={closeModal}
             >
               Close
             </button>
+            </div>
           </div>
         </div>
       )}
@@ -175,7 +260,7 @@ export default function OrderHistory() {
         {currentpage}
           </span>
    
-        <button onClick={()=>{
+        <button onClick={()=> {
           handelNextPage()
         }} className=" flex gap-2 items-center p-2 bg-white rounded-r-xl  border border-gray-400">
           next 

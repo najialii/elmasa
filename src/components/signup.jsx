@@ -118,7 +118,7 @@ const Register = () => {
           </a>
      
         </div>
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4 text-sm text-gray-600">
         <span className="bg-blue-200 text-primary px-1">contact us via</span> 
         <span className="flex items-center gap-2 font-bold text-primary bg-green-500 px-4 py-2 rounded-lg">
     <WhatsappLogo size={24} color="#fff" />

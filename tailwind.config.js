@@ -5,7 +5,32 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    patterns: {
+      opacities: {
+          100: "1",
+          80: ".80",
+          60: ".60",
+          40: ".40",
+          20: ".20",
+          10: ".10",
+          5: ".05",
+      },
+      sizes: {
+          1: "0.25rem",
+          2: "0.5rem",
+          4: "1rem",
+          6: "1.5rem",
+          8: "2rem",
+          16: "4rem",
+          20: "5rem",
+          24: "6rem",
+          32: "8rem",
+      }
+  },
     extend: {
+      animation: {
+        marquee: "marquee 3s ease-in-out infinite",
+      },
       clipPath: {
         diamond: "polygon(100% 100%, 100% 50%, 50% 100%, 0% 50%)",
       },
@@ -34,6 +59,11 @@ export default {
         'black': 1800,
       },
       keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        
         fadeIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
@@ -49,7 +79,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+
+    require('tailwindcss-bg-patterns'),
+  ],
   // Adding global scrollbar styles
   corePlugins: {
     preflight: true, // Make sure the global reset is active

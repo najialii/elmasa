@@ -3,11 +3,13 @@ import { useAuth } from "../../../context/authcontext";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 
+
 function Brand() {
     const [brands, setBrands] = useState([]);
     const { token } = useAuth();
     const [name, setName] = useState("");
     const [editBrands, setEditBrands] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchBrands = async () => {
@@ -15,6 +17,7 @@ function Brand() {
                 const response = await fetch("http://localhost:8000/api/brand/list");
                 const data = await response.json();
                 console.log("Fetched brands:", data);
+                setLoading(false);
                 setBrands(Array.isArray(data.data) ? data.data : []);
             } catch (error) {
                 console.error("Error fetching brands:", error);
@@ -36,9 +39,12 @@ function Brand() {
                 },
                 body: JSON.stringify(brand)
             });
+
+
             if (!response.ok) {
                 throw new Error("Network response was not ok " + response.statusText);
             }
+            
             const data = await response.json();
            toast.success('city added successfully!', {
                     position: "top-center",
@@ -53,7 +59,7 @@ function Brand() {
                   });
             setBrands([...brands, data]);
             setName("");
-            fetchBrands();
+            // fetchBrands();
         } catch (error) {
             console.error("Error:", error);
         }
@@ -97,6 +103,21 @@ function Brand() {
             console.error("Error updating brand:", error);
         }
     };
+
+    
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <div className="loading">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        );
+    }  
 
     return (
         <div>

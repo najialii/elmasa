@@ -23,14 +23,14 @@ export default function Cart({ isOpen, onClose }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Cart Modal"
-      className="absolute top-0 right-0 sm:h-scre z-[1000px] p-6  shadow-lg bg-white w-full max-w-lg max-h-fit"
-      overlayClassName="fixed inset-0  backdrop-blur-sm"
+      className="absolute z-40 bottom-0 lg:right-0  opacity-100 p-6 lg:h-[600px] h-[550px] shadow-lg bg-white w-full max-w-lg lg:max-h-fit rounded-xl"
+      overlayClassName="fixed inset-0 backdrop-blur-sm "
     >
       <div className="flex flex-col gap-6 max-w-lg w-full">
-        <div className="flex justify-between items-center border-b pb-4">
-          <h1 className="text-2xl text-primary font-bold">Shopping Cart</h1>
+        <div className="flex justify-between items-center border-b pb-4 mb-4">
+          <h1 className="text-2xl text-primary font-semibold">Shopping Cart</h1>
           <button
-            className="text-white bg-red-600 hover:bg-red-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+            className="text-white bg-red-500 hover:bg-red-700 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
             onClick={onClose}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 text-white">
@@ -39,34 +39,48 @@ export default function Cart({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="flex flex-col gap-4 max-h-80 overflow-y-auto">
+        
+        <div className="flex flex-col gap-4 max-h-72  overflow-y-auto">
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between gap-4 p-4 border border-l-4 rounded-l-lg border-l-primary rounded-md"
+                className="flex items-center justify-between gap-4 p-4 bg-white rounded-md shadow-md border border-gray-100hover:bg-gray-50 transition-all"
               >
                 <div className="flex gap-4">
                 <img
-                    src={JSON.parse(item.img)[0]} 
-                    alt={item.title}
-                    className="h-12 w-12 object-cover rounded-md"
-                  />
+  src={
+    (() => {
+      try {
+        const parsedImg = JSON.parse(item.img); 
+        const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
+        return imageUrl.startsWith("http")
+          ? imageUrl
+          : `http://localhost:8000/storage/${imageUrl}`;
+      } catch (error) {
+        console.error("Invalid JSON format for images:", product.item);
+        return "http://localhost:8000/storage/default-image.jpg"; 
+      }
+    })()
+  }
+  alt={item.name}
+  className="w-20 rounded-md mb-4"
+/>
                   <div className="flex flex-col">
                     <h2 className="font-semibold text-lg">{item.name}</h2>
-                    <p className="text-gray-500 text-sm" dir="rtl">{item.price} ج.م</p>
+                    <p className="text-primary  text-xl" dir="rtl">{item.price} ج.م</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-all"
                     onClick={() => removeFromCart(item)}
                   >
                     -
                   </button>
                   <span className="font-medium">{item.quantity}</span>
                   <button
-                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-all"
                     onClick={() => addToCart(item)}
                   >
                     +
@@ -76,15 +90,9 @@ export default function Cart({ isOpen, onClose }) {
             ))
           ) : (
             <div className="flex flex-col gap-4 justify-center items-center">
-              <div>
-                <img
-                  src={cartsvg}
-                  className="w-40 h-40"
-                  alt="Empty Cart"
-                />
-              </div>
+              <img src={cartsvg} className="w-40 h-40" alt="Empty Cart" />
               <p className="text-center text-xl text-gray-600">Your cart is empty.</p>
-              <button className="flex items-center justify-center gap-2 relative h-10 rounded-xl w-52 overflow-hidden border border-primary bg-primary text-white shadow-2xl transition-all">
+              <button className="relative h-10 w-52 bg-primary text-white rounded-xl flex items-center justify-center gap-2 hover:bg-primary-dark transition-all">
                 <Link to="/shop">Continue Shopping</Link>
               </button>
             </div>
@@ -99,13 +107,13 @@ export default function Cart({ isOpen, onClose }) {
             </div>
             <div className="flex gap-4">
               <button
-                className="w-full bg-primary text-white py-2 rounded-md hover:bg-green-600"
+                className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition-all"
                 onClick={handleCheckout}
               >
                 Checkout
               </button>
               <button
-                className="w-full bg-red-400 hover:bg-red-500 text-white py-2 rounded-md"
+                className="w-full bg-red-400 hover:bg-red-500 text-white py-2 rounded-md transition-all"
                 onClick={clearCart}
               >
                 Clear Cart

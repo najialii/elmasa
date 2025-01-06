@@ -11,22 +11,20 @@ const Pcard = ({ products,   }) => {
   const [productCounts, setProductCounts] = useState({});
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const handelProductDetails = (product) => {
-    console.log('Navigating to product:', product); // Log to see if product is correct
+    console.log('Navigating to product:', product); 
     navigate(`/product/${product.id}`, { state: { product } });
   };
   
   if (!products?.products?.data || products.products.data.length === 0) {
     return (
       <div className="h-screen w-screen flex justify-center bg-transparent items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-10 animate-[spin_0.8s_linear_infinite] fill-blue-600 block mx-auto"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
-          />
-        </svg>
+         <div className="loading">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     );
   }
@@ -62,8 +60,8 @@ const Pcard = ({ products,   }) => {
   
 
   return (
-    <div>
-      <div className="grid overflow-x-hidden grid-cols-2  sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-3 sm:gap-1 font-cairo lg:gap-2 ">
+    <div className='flex justify-center '>
+      <div className="grid  grid-cols-2  sm:grid-cols-2 lg:grid-cols-5  sm:gap-1 font-cairo lg:gap-12 ">
         {products.products.data.map((product) => {
           let images = [];
           try {
@@ -71,22 +69,35 @@ const Pcard = ({ products,   }) => {
           } catch (error) {
             console.error('Invalid JSON format for images:', product.img);
           }
-          console.log(images)
+          // console.log("immmmmmmmmmmmmmmmm", "http://localhost:8000/storage/"+ JSON.parse(product.img))
 
           const productQuantity = productCounts[product.id] || 0;
 
           return (
             <div
               key={product.id}
-              className="bg-white hover:shadow-2xl p-4 cursor-pointer lg:rounded-xl 
-                border border-gray-200 transition-shadow duration-500 flex flex-col lg:w-56"
+              className=" hover:shadow-2xl p-4 cursor-pointer lg:rounded-xl 
+                border border-gray-200 bg-white transition-shadow duration-500 flex flex-col lg:w-56"
             >
               <div onClick={() => handelProductDetails(product)} className="flex justify-center">
-                <img
-                  src={images[0] || 'https://place-hold.it/300'}
-                  alt={product.name}
-                  className="w-fit object-cover h-32 sm:h-56 lg:h-fit rounded-md mb-4"
-                />
+              <img
+  src={
+    (() => {
+      try {
+        const parsedImg = JSON.parse(product.img); 
+        const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
+        return imageUrl.startsWith("http")
+          ? imageUrl
+          : `http://localhost:8000/storage/${imageUrl}`;
+      } catch (error) {
+        console.error("Invalid JSON format for images:", product.img);
+        return "http://localhost:8000/storage/default-image.jpg"; 
+      }
+    })()
+  }
+  alt={product.name}
+  className="w-fit object-cover h-32 sm:h-56 lg:h-fit rounded-md mb-4"
+/>
               </div>
               <div>
                 <h3 className="text-gray-400">Brand: Elmasa</h3>

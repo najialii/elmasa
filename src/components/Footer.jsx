@@ -3,33 +3,32 @@ import { WhatsappLogo,ArrowRight,Envelope } from "@phosphor-icons/react";
 
 const Footer = () => (
   <>
-  
-<section className="w-screen py-6 mb-0 bg-secondary text-center">
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-6xl">
+   
+<section className="w-screen py-6 mb-0 mt-16 bg-secondaryLight text-center">
+  <div dir='rtl' className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-6xl">
     
     <div className="flex flex-col items-center justify-center">
-      <h2 className="text-5xl font-extrabold text-primary">Here to Help You</h2>
+      <h2 className="text-5xl font-extrabold text-primary">هنا للمساعدة</h2>
       <p className="mt-2 font-bold text-primary">
-      Choose any of the following support channels
+      اختر  أي من قنوات الدعم التالي
       </p>
     </div>
 
 
-    <div className="flex gap-2 items-center justify-center bg-secondaryLight rounded-lg py-4">
-      <div className=''>
-      <Envelope size={48} weight="light" color="#027384" />
-      </div>
-      <div className="flex justify-start flex-col">
-      <h2 className=" text-gray-800 mb-2">Support with Email</h2>
 
-      <p className="mt-2 font-bold  text-primary text-3xl">info@elmasa.com</p>
-      </div>
-    </div>
 
     <div className="flex flex-col items-center justify-center  bg-secondaryLight rounded-lg py-4">
     <div>
 
-      <h2 className=" text-gray-800 text-sm ">Prefer Chat?</h2>
+      <h2 className=" text-gray-800 text-sm ">الدعم عبر البريد الإلكتروني</h2>
+     <span className='flex items-center gap-3 '>
+       <Envelope size={48} weight="light" color="#027384" /> <h2 className='text-3xl text-primary font-extrabold'> info@elmasa.com</h2> </span>
+    </div>
+    </div>
+    <div className="flex flex-col items-center justify-center  bg-secondaryLight rounded-lg py-4">
+    <div>
+
+      <h2 className=" text-gray-800 text-sm ">هل تفضل الدردشة؟</h2>
      <span className='flex items-center gap-3 '>
        <WhatsappLogo size={48} weight="light" color="#027384" /> <h2 className='text-3xl text-primary font-extrabold'> Whatsapp</h2> </span>
     </div>
@@ -67,7 +66,7 @@ const Footer = () => (
         </div>
 
         <div class="mt-12">
-          <p class='text-white text-sm'>© ReadymadeUI. All rights reserved.</p>
+          <p class='text-white text-sm'>© elmasafoods. All rights reserved.</p>
         </div>
       </div>
     </footer>

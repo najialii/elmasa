@@ -4,9 +4,13 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AppRoutes from './components/routes';
 import { AuthProvider } from './context/authcontext';
+import Header from './components/navbarn';
 
 const AppContent = () => {
   const location = useLocation();
+
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+    {!isAuthPage && <Header />}
 
   const noLayoutRoutes = ['/login', '/signup', '/checkout', '/dashboard'];
 
@@ -17,8 +21,12 @@ const AppContent = () => {
   return (
     <>
       <div className="font-cairo min-h-[100hv] ">
-<Navbar />
+{/* <Navbar /> */}
+<Header />
+<div className=''> 
+
         <AppRoutes />
+</div>
       </div>
 
       {shouldShowLayout && <Footer />}

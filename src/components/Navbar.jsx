@@ -1,28 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Basket, SignIn, List,User } from "@phosphor-icons/react";
-import Cart from "./cartmodal"; 
+import { Basket, SignIn, List, User } from "@phosphor-icons/react";
+import Cart from "./cartmodal";
 import { CartContext } from "../context/cart";
-import logo from '../assets/imgs/elmasa.svg';
+import logo from "../assets/imgs/elmasa.svg";
 import { useAuth } from "../context/authcontext";
+
 const Navbar = () => {
   const { cartItems } = useContext(CartContext);
-  const [isCartOpen, setIsCartOpen] = useState(false); 
-  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [colorChange, setColorChange] = useState(false);
-  const [activeLink, setActiveLink] = useState("/")
-const {user, token} = useAuth();
-console.log("user shit", user);
-
-
+  const [activeLink, setActiveLink] = useState("/");
+  const { user, token } = useAuth();
 
   useEffect(() => {
     const changeNavColor = () => {
-      if (window.scrollY === 0) {
-        setColorChange(true);
-      } else {
-        setColorChange(false);
-      }
+      setColorChange(window.scrollY === 0);
     };
 
     window.addEventListener("scroll", changeNavColor);
@@ -42,132 +36,135 @@ console.log("user shit", user);
 
   return (
     <>
-   {/* <nav className="bg-secondary text-white py-2 flex items-center sticky top-0 justify-center animate-fadeIn">
-  <h3 className="font-semibold text-lg tracking-wide">
-    Delivering across all of Egypt
-  </h3>
-</nav> */}
-
-
+      {/* Top Navbar */}
       <nav
-        className= "bg-primary text-white   shadow-md duration-300 h-fit sticky top-0 min-h-[70px]   w-full"
+        className={`${
+          colorChange ? "bg-white" : "bg-primary"
+        } text-black fixed top-0 z-50 w-full shadow-md duration-300`}
       >
-        <div className="w-full  mx-auto  flex items-center  px-6">
-          <button
-            className="md:hidden text-gray-800 focus:outline-none"
-            onClick={toggleMenu}
-          >
-            <List size={28} color="#027384" />
+        <div className="flex items-center justify-between px-6 py-4">
+          {/* Mobile Menu Button */}
+          <button className="md:hidden text-white" onClick={toggleMenu}>
+            <List size={28} />
           </button>
 
-          <div className="flex-1 flex  sm:ml-10 space-x-2">
-            <img src={logo} alt="logo" className="lg:w-[10rem] lg:h-[6rem] w-20 h-full" />
-          </div>
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <img
+              src={logo}
+              alt="Elmasa Logo"
+              className="lg:w-40 lg:h-auto w-24 h-auto"
+            />
+          </Link>
 
-          <ul className="hidden md:flex space-x-8 ml-auto text-lg pr-10">
-          <li><Link to="/"  className={`${
-                  activeLink === '/' ? 'text-secondaryLight' : 'hover:text-secondarydark'
-                } text-lg transition-colors`
-                }
-                onClick={() => setActiveLink('/')}>Home</Link></li>
-
-            <li><Link to="/products"  className={`${
-                  activeLink === '/products' ? 'text-secondaryLight' : 'hover:text-secondarydark'
-                } text-lg transition-colors`
-                }
-                onClick={() => setActiveLink('/products')}>Products</Link></li>
-            <li>
-              <Link to="/shop"  className={`${
-                  activeLink === '/shop' ? 'text-secondaryLight' : 'hover:text-secondarydark'
-                } text-lg transition-colors`}
-                onClick={() => setActiveLink('/shop')}
+          {/* Navbar Links */}
+          <ul className="hidden md:flex items-center space-x-8 ml-auto">
+            {["Home", "Products", "Shop", "Recipes", "About Us"].map((item) => (
+              <li key={item}>
+                <Link
+                  to={`/${item.toLowerCase().replace(/ /g, "-")}`}
+                  className={`${
+                    activeLink === `/${item.toLowerCase().replace(/ /g, "-")}`
+                      ? "text-secondaryLight"
+                      : "hover:text-secondaryDark"
+                  } text-lg transition-colors`}
+                  onClick={() => setActiveLink(`/${item.toLowerCase()}`)}
                 >
-              Shop</Link></li>
-            <Link
-                to="/recipes"
-                className={`${
-                  activeLink === '/recipes' ? 'text-secondaryLight' : 'hover:text-secondarydark'
-                } text-lg transition-colors`}
-                onClick={() => setActiveLink('/recipes')}
-              >
-                Recipes
-              </Link>
-            <li>
-              <Link to="/about-us"  className={`${
-                  activeLink === '/about-us' ? 'text-secondaryLight' : 'hover:text-secondarydark'
-                } text-lg transition-colors` 
-                }
-                onClick={() => setActiveLink('/about-us')}
-                >About Us</Link></li>
+                  {item}
+                </Link>
+              </li>
+            ))}
           </ul>
 
-          {/* Cart and User Buttons */}
-          <div className="flex items-center">
-          <Link to={'./dashboard/uprofile'}>
-            <button className=" text-white font-bold gap-1 hidden lg:block p-2 rounded-xl">
-           
-            {token ? (
-  <div
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="Search something..."
+            className="hidden xl:block xl:w-80 bg-gray-100 border px-4 rounded h-10 outline-none text-sm transition-all ml-6"
+          />
 
-  className="flex items-center space-x-2">
-    <User size={28} color="#ADEB76" />
-    <span className="text-lg font-medium text-white">Welcome {user?.name}</span>
-  </div>
-) :  <Link to="/login"> <span> <SignIn size={30} color="#ADEB76" weight="fill" /> </span></Link>}
-    
-            </button>
-            </Link>       
-            <div className="relative inline-block">
+          {/* Icons */}
+          <div className="flex items-center space-x-4">
+            <Link to={token ? "/dashboard/uprofile" : "/login"}>
+              {token ? (
+                <div className="flex items-center space-x-2">
+                  <User size={28} color="#ADEB76" />
+                  <span className="text-lg font-medium">
+                    Welcome, {user?.name}
+                  </span>
+                </div>
+              ) : (
+                <SignIn size={28} color="#ADEB76" />
+              )}
+            </Link>
+
+            {/* Cart */}
+            <div className="relative">
               <button
-                className="gap-1 px-4 font-bold p-4 text-white rounded-full focus:outline-none flex items-center"
                 onClick={toggleCart}
+                className="flex items-center text-white"
               >
                 <Basket size={28} color="#ADEB76" />
-              
+                {cartItems.length > 0 && (
+                  <span className="absolute top-0 right-0 bg-primaryLight text-xs text-white rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItems.length}
+                  </span>
+                )}
               </button>
-
-              {cartItems.length === 0 ? <></> : (
-                <span className="absolute bottom-4 right-0 z-30 left-6 transform translate-x-1/2 -translate-y-1/2 bg-primaryLight text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartItems.length}
-                </span>
-                
-              )}
-           
-              
             </div>
           </div>
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 bg-primary text-gray-800 z-50 transform ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform duration-500 ease-in-out flex flex-col`}
+        className={`fixed inset-0 bg-primary text-white z-50 transform ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-500 ease-in-out`}
       >
-        <div className="flex justify-between p-6">
-          <button onClick={toggleMenu} className="text-gray-800">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <div className="flex justify-between items-center p-6">
+          <button onClick={toggleMenu}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+            >
               <path d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Mobile Menu Links */}
-        <ul className="flex-grow  flex flex-col justify-start font-bold text-white items-center w-full space-y-6">
-          {['Home', 'Products', 'Shop', 'Recipes', 'About Us'].map((item) => (
+        <ul className="flex flex-col items-center space-y-6 mt-4">
+          {["Home", "Products", "Shop", "Recipes", "About Us"].map((item) => (
             <li key={item}>
               <Link
-                to={`/${item.toLowerCase().replace(/ /g, '-')}`}
-                className="text-2xl py-4 block transition-colors hover:text-secondarydark"
+                to={`/${item.toLowerCase().replace(/ /g, "-")}`}
+                className="text-2xl transition-colors hover:text-secondaryDark"
                 onClick={toggleMenu}
               >
                 {item}
               </Link>
             </li>
           ))}
+          {token && (
+            <li>
+              <Link
+                to="/dashboard/uprofile"
+                className="text-2xl transition-colors hover:text-secondaryDark"
+                onClick={toggleMenu}
+              >
+                Profile
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 
+      {/* Cart Modal */}
       <Cart isOpen={isCartOpen} onClose={toggleCart} />
     </>
   );

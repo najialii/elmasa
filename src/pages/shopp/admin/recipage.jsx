@@ -15,6 +15,7 @@ function Recipage() {
                     throw new Error('Failed to fetch recipe');
                 }
                 const data = await response.json();
+                cobsol,e.log(data)
                 setRecipe(data.data);
             } catch (error) {
                 setError(error.message);
