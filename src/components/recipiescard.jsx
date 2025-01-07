@@ -6,19 +6,18 @@ import milk from '../assets/imgs/miokmilk.png';
 
 const Rcard = ({data, handleGetRecipe, recipesToShow, pending}) => {
 
-  console.log("the data ",data)
-  console.log("data.data:", data.recipes);
+  // console.log("the data ",data)
+  // console.log("data.data:", data.recipes);
     return (
         <div className="grid py-[50px] overflow-x-hidden grid-cols-2 justify-center sm:grid-cols-2 lg:grid-cols-5 sm:gap-1 font-cairo lg:gap-2">
         {data && data.recipes && data.recipes.data.map((data) => {
           const imageUrl = (() => {
             try {
-              // Check if the image path is a JSON string
               const parsedImg = JSON.parse(data.img);
               const imgUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg;
               return imgUrl.startsWith("http") ? imgUrl : `http://localhost:8000/storage/${imgUrl}`;
             } catch (error) {
-              // console.error("Invalid JSON format for images:", data.img);
+
               return data.img.startsWith("http") ? data.img : `http://localhost:8000/storage/${data.img}`;
             }
           })();

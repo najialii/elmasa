@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -22,8 +22,8 @@ const Ordersadmin = () => {
   const [search, setSearch] = useState("");
   const [errorMessage, setErrorMessage] = useState("")
   const { token } = useAuth();
-
-  console.log("the orders", orders);
+  const effectRan = useRef(false)
+  // console.log("the orders", orders);
   const isManagingStatus = view === "manageOrders";
 
   const handelNextPage = () => {
@@ -43,54 +43,57 @@ const Ordersadmin = () => {
     });
     setFilteredOrders(filtered);
   }
-console.log("filtered",filteredOrders)
+// console.log("filtered",filteredOrders)
 useEffect(() => {
+
   if(orders){
     setFilteredOrders(orders);
   }
 }, [orders]);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/orders/list?page=${currentpage}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+const fetchOrders = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/orders/list?page=${currentpage}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-        if (response.status = 200) {
-          setLoading(false);
-          const result = await response.data
-          console.log("herherheihishroisa",result.data);
-          if (result && result.data && Array.isArray(result.data.data)) {
-            setOrders(result.data.data);
-          } else {
-            setErrorMessage("Failed to fetch orders.");
-          }
-        } else {
-          const errorMessage = await response.text();
-          setErrorMessage("Failed to fetch orders");
-          toast.error("🦄 " + errorMessage, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        setErrorMessage("An error occurred while fetching the orders.");
+    if (response.status = 200) {
+      setLoading(false);
+      const result = await response.data
+      console.log("herherheihishroisa",result.data);
+      if (result && result.data && Array.isArray(result.data.data)) {
+        setOrders(result.data.data);
+      } else {
+        setErrorMessage("Failed to fetch orders.");
       }
-    };
-
-    fetchOrders();
+    } else {
+      const errorMessage = await response.text();
+      setErrorMessage("Failed to fetch orders");
+      toast.error("🦄 " + errorMessage, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    setErrorMessage("An error occurred while fetching the orders.");
+  }
+};
+  useEffect(() => {
+if(!effectRan.current){
+  effectRan.current =true
+  fetchOrders();
+}
   }, [currentpage, token]);
 
   const updateOrderStatus = async (orderId, newStatus) => {

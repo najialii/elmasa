@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/cart";
 import LikeButton from "../../components/like";
@@ -8,17 +8,17 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function CategoryPage() {
   const { id } = useParams();
-  console.log(" al id ", id);
+
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  console.log("this is the proooooooooooooo", products);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     search: "",
     size: "all",
   });
-
+    const effectRan = useRef(false)
   const { addToCart } = useContext(CartContext);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -56,21 +56,26 @@ function CategoryPage() {
     setFilters((prev) => ({ ...prev, size: e.target.value }));
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/products?cid=${id}&page=${1}`);
-        const data = response.data;
-        console.log("anan el product", data);
-        setProducts(data);
-        setFilteredProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/products?cid=${id}&page=${1}`);
+      const data = response.data;
+      console.log("anan el product", data);
+      setProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
-    fetchProducts();
+
+  useEffect(() => {
+    if (!effectRan.current) {
+      effectRan.current = true; // Set it to true immediately to prevent future runs
+      fetchProducts();
+    }
   }, [id]);
+  
 
   const handelProductDetails = (product) => {
     navigate(`/product/${product.id}`, { state: { product } });

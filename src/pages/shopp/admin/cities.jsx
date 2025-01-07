@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../../context/authcontext';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -8,6 +8,7 @@ function Cities() {
     const [name, setName] = useState("");
     const [price, setPrice] = useState(0);
     const {token} = useAuth();
+    const effectRan = useRef(false)
 
     const handelCreateCities = async (e) => {
         e.preventDefault();
@@ -43,18 +44,21 @@ function Cities() {
             });
     };
 
+    const fetchCities = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/city/list`);
+            const data = await response.json();
+            console.log("Fetched cities:", data);
+            setCities(Array.isArray(data.data) ? data.data : []);
+        } catch (error) {
+            console.error("Error fetching cities:", error);
+        }
+    };
     useEffect(() => {
-        const fetchCities = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/city/list`);
-                const data = await response.json();
-                console.log("Fetched cities:", data);
-                setCities(Array.isArray(data.data) ? data.data : []);
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-            }
-        };
-        fetchCities();
+        if(!effectRan.current){
+            effectRan.current = true
+            fetchCities();
+        }
     }, []);
 
     const handleEditClick = (city) => {

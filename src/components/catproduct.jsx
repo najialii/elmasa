@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState, useRef } from "react";
   import Pcard from "../pages/shopp/pcards";
   import { useNavigate } from "react-router-dom";
   import { Star,Lightning } from "@phosphor-icons/react";
@@ -6,6 +6,7 @@
 import axios from "axios";
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const CategoryProducts = () => {
+    const effectRan = useRef(false)
     const [category1Products, setCategory1Products] = useState([]);
     const [category2Products, setCategory2Products] = useState([]);
     const [category3Products, setCategory3Products] = useState([]);
@@ -26,6 +27,7 @@ import axios from "axios";
 
     useEffect(() => {
       const fetchAllProducts = async () => {
+        
         setLoading(true);
         await Promise.all([
           fetchCategoryProducts(1, setCategory1Products),
@@ -34,8 +36,11 @@ import axios from "axios";
         ]);
         setLoading(false);
       };
+      if (!effectRan.current) {
+        effectRan.current = true
+        fetchAllProducts();
+      }
 
-      fetchAllProducts();
     }, []);
 
     const handleCategoryClick = (categoryId) => {

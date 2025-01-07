@@ -49,11 +49,11 @@ const DashboardLayout = () => {
       // }, []); 
 
   const adminLinks = [
-    {
-      to: "/dashboard/chart",
-      label: "Overview",
-      icon: <ChartBar  size={24} weight={isActive("/dashboard/cities") ? "fill" : "fill"} color={isActive("/dashboard/chart") ? "#023C48" : "#a9a9a9"} />,
-    },
+    // {
+    //   to: "/dashboard/chart",
+    //   label: "Overview",
+    //   icon: <ChartBar  size={24} weight={isActive("/dashboard/cities") ? "fill" : "fill"} color={isActive("/dashboard/chart") ? "#023C48" : "#a9a9a9"} />,
+    // },
     {
       to: "/dashboard/orders",
       label: "Orders",

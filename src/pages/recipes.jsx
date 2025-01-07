@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import LikeButton from '../components/like';
@@ -9,26 +9,30 @@ import Homerec from './shopp/homrec';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Recipes = () => {
+  const effectRan = useRef(false)
   const navigate = useNavigate();
   const [currentpage, setCurrentPage] = useState(1);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loadMore , setLoadMorw] = useState(true)
-
+  
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/recipes?page=${currentpage}`);
+      setData(response.data);
+      console.log("Fetched recipes:", response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/recipes?page=${currentpage}`);
-        setData(response.data);
-        console.log("Fetched recipes:", response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if(!effectRan.current){
+  effectRan.current =true
     fetchRecipes();
+    }
   }, [currentpage]);
 
   if (loading) {

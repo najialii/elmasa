@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,6 +15,8 @@ import masa from '../../assets/imgs/miokmilk.png'
 import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Shop() {
+  const effectRan = useRef(false)
+  const [firRen , setFirRen] = useState(true)
   const [categories, setCategories] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
     const [currentpage, setCurrentPage] = useState(2);
@@ -25,20 +27,28 @@ function Shop() {
   
 
   const navigate = useNavigate();
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/categories?page=${currentpage}`
+      );
+      const data = response.data;
+      setLoading(false);
+      console.log("Fetched categories:", data);
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/categories?page=${currentpage}`
-        );
-        const data = response.data;
-        setLoading(false);
-        console.log("Fetched categories:", data);
-        setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    fetchCategories();
+    if (effectRan.current) {
+      fetchCategories();
+      
+    }else {
+      
+    }
+    effectRan.current = true
+
   }, []);
 
   const handleCategoryClick = (category) => {

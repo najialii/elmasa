@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../context/authcontext';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,7 +10,7 @@ function Addcat() {
     const [catImg, setCatImg] = useState(null)
     const { token } = useAuth();
     const [loading, setLoading] = useState(true);   
-
+    const effectRan = useRef(false)
 
     const handleCreateCat = async (e) => {
         e.preventDefault();
@@ -53,21 +53,24 @@ function Addcat() {
         // }
       };
 
+      const fetchCategories = async () => {
+          setLoading(true);
+          try {
+              const response = await axios.get(`${API_BASE_URL}/categories`);
+              const data = response.data;
+              console.log("Fetched categories:", data);
+              setCategories(Array.isArray(data.data.data) ? data.data.data : []);
+          } catch (error) {
+              console.error("Error fetching categories:", error);
+          } finally {
+              setLoading(false);
+          }
+      };
     useEffect(() => {
-        const fetchCategories = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(`${API_BASE_URL}/categories`);
-                const data = response.data;
-                console.log("Fetched categories:", data);
-                setCategories(Array.isArray(data.data.data) ? data.data.data : []);
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCategories();
+        if(!effectRan.current){
+            effectRan.current = true
+            fetchCategories();
+        }
     }, []);
 
     if (loading) {

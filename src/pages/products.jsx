@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import ban from "../assets/imgs/banner.jpg";
 import axios from "axios";
@@ -11,20 +11,27 @@ function Products() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const effectRan = useRef(false)
 
+
+  const fetchCategories = async () => {
+    try {
+    const response = await axios.get(`${API_BASE_URL}/categories`);
+      setData(response.data);
+      console.log("Fetched categoriesssssssssssssssssssssssssssss:", response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-      const response = await axios.get(`${API_BASE_URL}/categories`);
-        setData(response.data);
-        console.log("Fetched categoriesssssssssssssssssssssssssssss:", response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (effectRan.current) {
+
+      return;
+    }
     fetchCategories();
+    effectRan.current = true;
   }, []);
 
   const handleAnimation = {

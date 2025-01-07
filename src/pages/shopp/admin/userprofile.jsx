@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authcontext";
 import { UserGear, UserCircle } from "@phosphor-icons/react";
@@ -15,7 +15,7 @@ const Uprofile = () => {
   const [editAddress, setEditAddress] = useState("");
   const [editEmail, setEditEmail] = useState("");
   const [editModal, setEditModal] = useState(false);
-
+  const effectRan = useRef(false)
   const handleEdit = async () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/user/update`, {
@@ -43,32 +43,35 @@ const Uprofile = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/user/me`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/user/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-      
-        if (response.status >= 200 && response.status < 300) {
-          console.log("Fetched Data:", response.data);
-          setData(response.data);
-        } else {
-          throw new Error('Failed to fetch data');
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+    
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Fetched Data:", response.data);
+        setData(response.data);
+      } else {
+        throw new Error('Failed to fetch data');
       }
-    };
-
-    if (token) {
-      fetchData();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+      
+    if (!effectRan.current) {
+      effectRan.current = true
+      if (token) {
+        fetchData();
+      }
     }
   }, [token]); 
 

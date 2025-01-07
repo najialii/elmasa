@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../../context/authcontext";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -11,20 +11,24 @@ function Brand() {
     const [name, setName] = useState("");
     const [editBrands, setEditBrands] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const effectRan = useRef(false)
+    const fetchBrands = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/brand/list`);
+            const data = await response;
+            console.log("Fetched brands:", data);
+            setLoading(false);
+            setBrands(Array.isArray(response.data.data) ? response.data.data : []);
+        } catch (error) {
+            console.error("Error fetching brands:", error);
+        }
+    };
     useEffect(() => {
-        const fetchBrands = async () => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/brand/list`);
-                const data = await response;
-                console.log("Fetched brands:", data);
-                setLoading(false);
-                setBrands(Array.isArray(response.data.data) ? response.data.data : []);
-            } catch (error) {
-                console.error("Error fetching brands:", error);
-            }
-        };
-        fetchBrands();
+    
+        if (!effectRan.current) {
+            effectRan.current = true 
+            fetchBrands();
+        }
     }, []);
 
     const handelCreateBrand = async (e) => {

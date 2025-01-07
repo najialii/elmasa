@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../../../context/authcontext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,Area,Line,  ResponsiveContainer, PieChart, Pie, Cell, Legend,ComposedChart  } from "recharts";
@@ -10,16 +10,16 @@ function Reports() {
   const { token } = useAuth();
   const [revenuePerCategory, setRevenuePerCategory] = useState([]);
   const [revenuePerCity, setRevenuePerCity] = useState([]);
-
+  const effectRan = useRef(false)
 
 
   const colors = ["#027384", "#5ab4c4", "#cedf2f", "#99ad22", "#8af9e3", "#e4ec83"];
 
   function getColor(index) {
-    return colors[index % colors.length]; // Cycle through colors if more cities than colors
+    return colors[index % colors.length]; 
   }
 
-  // Fetch revenue per category
+  
   const getRevenuePerCategory = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/orders/revenuePerCategory`, {
@@ -84,10 +84,13 @@ function Reports() {
   };
 
   useEffect(() => {
-    getTotalRevenueForPeriod();
-    getTotalRevenue();
-    getRevenuePerCategory();
-    getRevenuePerCity();
+    if(!effectRan.current){
+      effectRan.current = true
+      getTotalRevenueForPeriod();
+      getTotalRevenue();
+      getRevenuePerCategory();
+      getRevenuePerCity();
+    }
   }, [token]);
 
   return (
