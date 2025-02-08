@@ -14,12 +14,13 @@ import CategoryProducts from "../../components/catproduct";
 import masa from '../../assets/imgs/miokmilk.png'
 import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const VITE_IMAGE_URL = import.meta.env.VITE_IMAGE_STORAGE_URL
 function Shop() {
   const effectRan = useRef(false)
   const [firRen , setFirRen] = useState(true)
   const [categories, setCategories] = useState([]);
   const [visibleCount, setVisibleCount] = useState(4);
-    const [currentpage, setCurrentPage] = useState(2);
+    const [currentpage, setCurrentPage] = useState(4);
     const [loading, setLoading] = useState(true);  
   const handleShowMore = () => {
     setVisibleCount((prevCount) => prevCount + 4); 
@@ -29,7 +30,7 @@ function Shop() {
   const navigate = useNavigate();
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/categories?page=${currentpage}`
+      const response = await axios.get(`${API_BASE_URL}/categories`
       );
       const data = response.data;
       setLoading(false);
@@ -41,7 +42,7 @@ function Shop() {
   };
 
   useEffect(() => {
-    if (effectRan.current) {
+    if (!effectRan.current) {
       fetchCategories();
       
     }else {
@@ -56,13 +57,13 @@ function Shop() {
     navigate(`/category/${category.id}`);
   };
 
-  const handelNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
+  // const handelNextPage = () => {
+  //   setCurrentPage((prevPage) => prevPage + 1);
+  // };
 
-  const handelprevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
+  // const handelprevPage = () => {
+  //   setCurrentPage((prevPage) => prevPage - 1);
+  // };
 
   if (loading) {
     return (
@@ -87,14 +88,14 @@ function Shop() {
 
   return (
     <div className="bg-white" >
-      {/* <div className="max-w-screen mt-2 relative overflow-hidden px-4 lg:px-9">
+     <div className="max-w-screen mt-2 relative overflow-hidden px-4 lg:px-9">
   <img
-    className="w-full h-[40vh] sm:h-[60vh] lg:h-[70vh] rounded-t-xl lg:mt-6 object-cover clip-arch sm:clip-arch-md lg:clip-arch-lg"
+    className="w-full h-[500px] sm:h-[60vh] lg:h-[70vh] rounded-xl lg:mt-6 object-cover clip-arch sm:clip-arch-md lg:clip-arch-lg"
     src={ban}
     alt="Banner"
   />
 </div>
-
+{/* 
 <style>
   {`
     @layer utilities {
@@ -113,10 +114,10 @@ function Shop() {
       }
     }
   `}
-</style> */}
+</style> 
+  */}
  
- 
-<div className="bg-gray-100  relative">
+<div className="bg-white  relative">
 {/* 
   <button 
   className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
@@ -127,14 +128,14 @@ function Shop() {
   <ArrowRight size={20} color="#fff" />
   </button> */}
 
-  <div className="absolute top-0 left-0 right-0 bottom-0  bg-gradient-to-b from-gray-100 via-transparent to-white opacity-50 pointer-events-none"></div>
+  {/* <div className="absolute top-0 left-0 right-0 bottom-0  bg-gradient-to-b from-gray-100 via-transparent to-white opacity-50 pointer-events-none"></div> */}
   
   <div className="flex justify-center items-start  ">
   </div>
 
-  <div className="flex w-screen justify-center">
+  <div className="flex w-full justify-center">
   <motion.div
-  className="flex gap-4 overflow-x-auto no-scrollbar"
+  className="flex gap-2  overflow-x-auto no-scrollbar"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ delay: 0.5, duration: 1 }}
@@ -142,24 +143,42 @@ function Shop() {
   {categories?.data?.data && categories.data.data.length > 0 ? (
     categories.data.data.map((category) => (
       <motion.div
-        onClick={() => handleCategoryClick(category)}
-        key={category.id}
-        className="flex-shrink-0 flex flex-col my-4 justify-center overflow-hidden items-center lg:gap-2 cursor-grab w-28 h-28 bg-transparent group transition-transform duration-300 hover:scale-105 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 1 }}
-      >
-        <div className="rounded-xl p-2 bg-white lg:w-40 w-32 h-32 lg:h-40  flex flex-col items-center">
-          <img
-            src={masa} 
-            className="w-24 sm:w-28 md:w-32 lg:w-36"
-            alt={category.name}
-          />
-          <h3 className="text-gray-900 text-sm sm:text-base md:text-lg text-center mt-2">
-            {category.name}
-          </h3>
-        </div>
-      </motion.div>
+      onClick={() => handleCategoryClick(category)}
+      key={category.id}
+      className="flex-shrink-0 flex flex-col h-32 lg:h-40 mb-12 justify-center items-center  cursor-pointer w-28 overflow-y-hidden
+        md:w-48 lg:w-52"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 1 }}
+    >
+      
+      <div className="relative w-28 h-28 sm:w-40 sm:h-40  lg:w-48 lg:h-48 broder rounded-md flex items-center justify-center  group-hover:shadow-lg transition-shadow">
+      {
+  console.log(`${VITE_IMAGE_URL}/${category.img}`)
+}
+{
+  category.img ? (
+    <img
+
+      src={category.img.includes("https") ? category.img : `${VITE_IMAGE_URL}/${category.img}`}
+      alt={category.name}
+      className="lg:w-20 w-16 object-cover lg:h-20 h-16  hover:scale-110  transition-all duration-500 ease-in-out transform"
+    />
+  ) : (
+    console.log("No image for category:", category)
+  )
+}
+
+
+
+      </div>
+    
+      
+      <h3 className="text-gray-900  text-center font-bold text-sm sm:text-base md:text-lg lg:text-xl group-hover:text-primary transition-colors">
+        {category.name}
+      </h3>
+    </motion.div>
+    
     ))
   ) : (
     <p className="text-center text-gray-500 w-full">No categories available</p>

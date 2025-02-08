@@ -15,26 +15,30 @@ import axios from "axios";
 
     const fetchCategoryProducts = async (categoryId, setCategoryProducts) => {
       try {
+        
         const response = await axios.get(`${API_BASE_URL}/products?cid=${categoryId}`);
+        console.log("Full API response:", response.data);
+
         console.log("Response data:", response.data);
         
-        setCategoryProducts(response.data?.products?.data.slice(0, 5)); 
+        setCategoryProducts(response.data?.products?.data); 
       } catch (error) {
         console.error("Error fetching products:", error);
       }
+      // setLoading(false); 
     };
     
 
     useEffect(() => {
       const fetchAllProducts = async () => {
         
-        setLoading(true);
+        // setLoading(true);
         await Promise.all([
           fetchCategoryProducts(1, setCategory1Products),
           fetchCategoryProducts(2, setCategory2Products),
           fetchCategoryProducts(3, setCategory3Products),
         ]);
-        setLoading(false);
+        // setLoading(false);
       };
       if (!effectRan.current) {
         effectRan.current = true
@@ -47,27 +51,30 @@ import axios from "axios";
       navigate(`/category/${categoryId}`);
     };
 
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center h-screen w-screen">
-          <div className="loading">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      );
-    }
+    
+  
+    // if (loading) {
+    //   return (
+    //     <div className="flex justify-center items-center h-screen w-screen">
+    //       <div className="loading">
+    //         <span></span>
+    //         <span></span>
+    //         <span></span>
+    //         <span></span>
+    //         <span></span>
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     return (
-      <div className="mt-8 lg:mx-12">
+      <div className="mt-8 ">
 
       <div dir="rtl" className=' w-full h-12 mb-4 '>
-        <div className='flex flex-col items-start justify-end mt-8'>
-          <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Star size={20} color="#214C4F" /> فئة مميزة
+        <div className='flex items-center justify-start lg:px-32  mt-8'>
+          <h2 className='max-w-5xl text-2xl text-center font-bold leading-none tracking-tighter
+           text-gray-900 md:text-5xl lg:text-2xl lg:max-w-7xl'>
+            فئة مميزة
           </h2>
         </div>
       </div>
@@ -86,10 +93,12 @@ import axios from "axios";
         
         <div className="flex justify-center my-8">
           <button
-            className="bg-secondaryLight text-white px-6 text-xl py-2 rounded-lg shadow-md hover:bg-secondary transition"
+   className="border-2 border-secondaryLight animate-scaleIn text-base hover:text-white hover:bg-secondaryLight text-secondaryLight px-4 py-2 rounded-lg
+   w-38
+   transition"
             onClick={() => handleCategoryClick(1)}
           >
-            Show More
+            المزيد
           </button>
         </div>
       </div>
@@ -129,14 +138,15 @@ import axios from "axios";
 </section> */}
     
       
+
     <div dir="rtl" className=' w-full h-12 mb-4 '>
-        <div className='flex flex-col items-start justify-end mt-8'>
-          <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Star size={20} color="#214C4F" /> فئة مميزة
+        <div className='flex items-center justify-start lg:px-32  mt-8'>
+          <h2 className='max-w-5xl text-2xl text-center font-bold leading-none tracking-tighter
+           text-gray-900 md:text-5xl lg:text-2xl lg:max-w-7xl'>
+            فئة مميزة
           </h2>
         </div>
       </div>
-    
       <div className=" p-2 relative">
         {/* <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
         <ArrowLeft size={20} color="#fff" />
@@ -155,23 +165,25 @@ import axios from "axios";
         
         <div className="flex justify-center my-8">
           <button
-            className="bg-secondaryLight text-white px-4 py-2 rounded-lg shadow-md hover:bg-secondary transition"
+   className="border-2 border-secondaryLight animate-scaleIn text-base hover:text-white hover:bg-secondaryLight text-secondaryLight px-4 py-2 rounded-lg
+   w-38
+   transition"
             onClick={() => handleCategoryClick(2)}
           >
-            Show More
+            المزيد
           </button>
         </div>
       </div>
     
-      {/* Third Section */}
+    
       <div dir="rtl" className=' w-full h-12 mb-4 '>
-        <div className='flex flex-col items-start justify-end mt-8'>
-          <h2 className='flex items-center gap-2 font-black text-primary text-xl'>
-            <Star size={20} color="#214C4F" /> فئة مميزة
+        <div className='flex items-center justify-start lg:px-32  mt-8'>
+          <h2 className='max-w-5xl text-2xl text-center font-bold leading-none tracking-tighter
+           text-gray-900 md:text-5xl lg:text-2xl lg:max-w-7xl'>
+            فئة مميزة
           </h2>
         </div>
       </div>
-    
       <div className=" p-2 ">
         
         {/* <button className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-secondaryLight text-white p-3 rounded-md shadow-lg z-10">
@@ -189,10 +201,12 @@ import axios from "axios";
         
         <div className="flex justify-center my-8">
           <button
-            className="bg-secondaryLight text-white px-4 py-2 rounded-lg shadow-md hover:bg-secondary transition"
+            className="border-2 border-secondaryLight animate-scaleIn text-base hover:text-white hover:bg-secondaryLight text-secondaryLight px-4 py-2 rounded-lg
+             w-38
+             transition"
             onClick={() => handleCategoryClick(3)}
           >
-            Show More
+            المزيد
           </button>
         </div>
       </div>

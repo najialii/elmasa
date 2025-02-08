@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import AppRoutes from './components/routes';
 import { AuthProvider } from './context/authcontext';
 import Header from './components/navbarn';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 const AppContent = () => {
   const location = useLocation();
@@ -20,6 +21,8 @@ const AppContent = () => {
 
   return (
     <>
+      <SkeletonTheme baseColor="#f3f3f3" highlightColor="#e0e0e0">
+     
       <div className="font-cairo min-h-[100hv] ">
 {/* <Navbar /> */}
 <Header />
@@ -30,6 +33,8 @@ const AppContent = () => {
       </div>
 
       {shouldShowLayout && <Footer />}
+         
+      </SkeletonTheme>
     </>
   );
 };

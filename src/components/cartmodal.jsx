@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import Modal from "react-modal";
 import { CartContext } from "../context/cart";
 import cartsvg from "../assets/imgs/box.png";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
-Modal.setAppElement("#root");
+import { Basket, Trash, List, User } from "@phosphor-icons/react";
+const VITE_IMAGE_URL = import.meta.env.VITE_IMAGE_STORAGE_URL
 
 export default function Cart({ isOpen, onClose }) {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext);
@@ -19,109 +18,151 @@ export default function Cart({ isOpen, onClose }) {
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      contentLabel="Cart Modal"
-      className="absolute z-40 bottom-0 lg:right-0  opacity-100 p-6 lg:h-[600px] h-[550px] shadow-lg bg-white w-full max-w-lg lg:max-h-fit rounded-xl"
-      overlayClassName="fixed inset-0 backdrop-blur-sm "
+    <>
+ <div dir='rtl'
+  className={`fixed z-40 top-0 ${
+    isOpen ? "right-0" : "-right-full"
+  } lg:w-[400px] w-[90%] h-full bg-white shadow-xl transition-transform duration-300 ease-in-out`}
+  style={{ zIndex: 1050 }}
+>
+  {/* Sidebar Header */}
+  <div className="flex justify-between items-center border-b px-6 py-4">
+    <h1 className="text-base gap-2 flex text-primary font-semibold">
+
+    <Basket size={24} color="#00000" weight="fill" />
+    السلة
+    </h1>
+    <button
+      className="text-gray-900  p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+      onClick={onClose}
     >
-      <div className="flex flex-col gap-6 max-w-lg w-full">
-        <div className="flex justify-between items-center border-b pb-4 mb-4">
-          <h1 className="text-2xl text-primary font-semibold">Shopping Cart</h1>
-          <button
-            className="text-white bg-red-500 hover:bg-red-700 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-            onClick={onClose}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        className="w-4 h-4 text-gray-900 text-4xl "
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div className="flex gap-2  flex-col h-full">
+ 
+    <div dir="rtl" className="flex-grow lg:max-h-[420px] max-h-[650px] overflow-y-auto  py-4">
+      {cartItems.length > 0 ? (
+        cartItems.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center border border-t border-gray-200 justify-between gap-4 p-4 bg-white   hover:bg-gray-50 transition-all"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 text-white">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        
-        <div className="flex flex-col gap-4 max-h-72  overflow-y-auto">
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between gap-4 p-4 bg-white rounded-md shadow-md border border-gray-100hover:bg-gray-50 transition-all"
+            <div className="flex gap-4 ">
+              <img
+                src={
+                  (() => {
+                    try {
+                      const parsedImg = JSON.parse(item.img);
+                      const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg;
+                      return imageUrl.startsWith("http")
+                        ? imageUrl
+                        : `${VITE_IMAGE_URL}/${imageUrl}`;
+                    } catch (error) {
+                      console.error("Invalid JSON format for images:", item.img);
+                      return "http://localhost:8000/storage/default-image.jpg";
+                    }
+                  })()
+                }
+                alt={item.name}
+                className="w-[5.25rem] h-[5.25rem]  rounded-md"
+              />
+              <div className="flex flex-col justify-center items-start">
+                <h2 className="text-base w-full">{item.name}</h2>
+                <div className="flex items-center gap-2 mt-4">
+                <button
+                className="px-3 py-1 bg-primary   text-white rounded hover:bg-gray-300 transition-all"
+                onClick={() => addToCart(item)}
               >
-                <div className="flex gap-4">
-                <img
-  src={
-    (() => {
-      try {
-        const parsedImg = JSON.parse(item.img); 
-        const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
-        return imageUrl.startsWith("http")
-          ? imageUrl
-          : `http://localhost:8000/storage/${imageUrl}`;
-      } catch (error) {
-        console.error("Invalid JSON format for images:", product.item);
-        return "http://localhost:8000/storage/default-image.jpg"; 
-      }
-    })()
-  }
-  alt={item.name}
-  className="w-20 rounded-md mb-4"
-/>
-                  <div className="flex flex-col">
-                    <h2 className="font-semibold text-lg">{item.name}</h2>
-                    <p className="text-primary  text-xl" dir="rtl">{item.price} ج.م</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-all"
-                    onClick={() => removeFromCart(item)}
-                  >
-                    -
-                  </button>
-                  <span className="font-medium">{item.quantity}</span>
-                  <button
-                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-all"
-                    onClick={() => addToCart(item)}
-                  >
-                    +
-                  </button>
-                </div>
+                +
+              </button>
+              <span className="font-medium">{item.quantity}</span>
+                <button
+                className="px-3 py-1 bg-white text-primary border border-primary rounded hover:bg-gray-300 transition-all"
+                onClick={() => removeFromCart(item)}
+              >
+                -
+              </button>
+     
+           
               </div>
-            ))
-          ) : (
-            <div className="flex flex-col gap-4 justify-center items-center">
-              <img src={cartsvg} className="w-40 h-40" alt="Empty Cart" />
-              <p className="text-center text-xl text-gray-600">Your cart is empty.</p>
-              <button className="relative h-10 w-52 bg-primary text-white rounded-xl flex items-center justify-center gap-2 hover:bg-primary-dark transition-all">
-                <Link to="/shop">Continue Shopping</Link>
-              </button>
-            </div>
-          )}
-        </div>
 
-        {cartItems.length > 0 && (
-          <div className="border-t pt-4">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-lg font-semibold text-gray-900">Total:</span>
-              <span className="text-2xl text-primary font-bold" dir="rtl">{getCartTotal()} ج.م</span>
+
+              </div>
             </div>
-            <div className="flex gap-4">
-              <button
-                className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition-all"
-                onClick={handleCheckout}
-              >
-                Checkout
-              </button>
-              <button
-                className="w-full bg-red-400 hover:bg-red-500 text-white py-2 rounded-md transition-all"
-                onClick={clearCart}
-              >
-                Clear Cart
-              </button>
+            <div className="flex justify-end items-center gap-2">
+
+            <p className="text-gray-800 font-extrabold text-base" dir="rtl">{item.price} ج.م</p>
+            
+              <hr className="border-t border-gray-200" />
             </div>
           </div>
-        )}
+        ))
+      ) : (
+        <div className="flex flex-col gap-4 justify-center my-40 lg:my-40 items-center">
+          <div>
+
+          </div>
+
+          <div className="flex items-center flex-col">
+
+          <img src={cartsvg} className="w-32 object-contain" alt="Empty Cart" />
+          <p className="text-center text-xl text-gray-600">Your cart is empty.</p>
+          </div>
+          <div className="fixed bottom-0  my-6">
+
+          <Link
+            to="/shop"
+            className="h-10 w-52 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-primary-dark transition-all"
+            >
+            Continue Shopping
+          </Link>
+            </div>
+        </div>
+      )}
+    </div>
+
+
+    {cartItems.length > 0 && (
+      <div className="border-t border-b px-6  border-gray-200 mt-4">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-base font-semibold text-gray-500">الاجمالي </span>
+          <span className="text-base text-primary font-bold" dir="rtl">{getCartTotal()} ج.م</span>
+        </div>
+        <div className="flex gap-4">
+     
+        </div>
+
+
+        <div className="flex gap-2">
+        <button
+            className="w-full  bg-primary text-white py-1.5 text-sm rounded-md hover:bg-primary-dark transition-all"
+            onClick={handleCheckout}
+          >
+            اتمام الشراء
+          </button>
+          <button
+            className="w-[70%] flex items-center gap-2 justify-center border border-primary text-primary py-2 rounded-md transition-all"
+            onClick={clearCart}
+          >
+               {/* <Trash size={28} color="#ee7272" weight="fill" /> Cart */}
+               تفاصيل السلة
+          </button>
+        </div>
       </div>
-    </Modal>
+    )}
+  </div>
+</div>
+
+    </>
   );
 }

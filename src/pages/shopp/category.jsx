@@ -40,6 +40,7 @@ function CategoryPage() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     applyFilters();
   }, [filters, products]);
 
@@ -68,7 +69,7 @@ function CategoryPage() {
     }
   };
 
-
+  
   useEffect(() => {
     if (!effectRan.current) {
       effectRan.current = true; // Set it to true immediately to prevent future runs
@@ -81,22 +82,22 @@ function CategoryPage() {
     navigate(`/product/${product.id}`, { state: { product } });
   };
 
-  if (products.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-screen w-screen">
-        <div className="loading">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-    );
-  }
+  // if (products.length === 0) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen w-screen">
+  //       <div className="loading">
+  //         <span></span>
+  //         <span></span>
+  //         <span></span>
+  //         <span></span>
+  //         <span></span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="flex flex-col lg:flex-row h-fit">
+    <div dir="rtl" className="flex flex-col lg:flex-row h-fit mx-4">
       <button
         className="lg:hidden p-4 flex justify-start h-12 items-center gap-2 text-gray-800 rounded-lg"
         onClick={() => setIsFilterOpen((prev) => !prev)}
@@ -105,24 +106,25 @@ function CategoryPage() {
         <span className="font-bold text-xl">{isFilterOpen ? "Close" : "Filter"}</span>
       </button>
 
-      <aside
-        className={`w-full lg:w-80 p-4 bg-white rounded-xl lg:mt-10 shadow-lg lg:h-screen mb-6 lg:mb-0 transition-all duration-500 ease-in-out transform ${
-          isFilterOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+      <aside dir="rtl"
+        className={`w-full lg:w-72 p-4 bg-white border border-gray-200 rounded-sm  shadow-md shadow-gray-200  lg:mt-10 lg:h-screen mb-6 lg:mb-0 transition-all duration-500 ease-in-out transform ${
+          isFilterOpen ? "max-h-full opacity-100" : "max-h-0 opacity-0"
         } lg:opacity-100 lg:max-h-screen`}
       >
-        <h2 className="text-xl font-bold mb-4">Filter Products</h2>
+<div className="">
+تصنيفات خاصة و عروض
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Search</label>
+          <label className="block font-semibold text-base mb-2">بحث</label>
           <input
             type="text"
             className="w-full border rounded px-3 py-2"
-            placeholder="Search products..."
+            placeholder="ابحث عن المنتجات..."
             value={filters.search}
             onChange={handleSearchChange}
           />
         </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Price Range</label>
+        <div className="mb-4 ">
+          <label className="block font-black mb-2 text-base">السعر</label>
           <select
             className="w-full border rounded px-3 py-2"
             onChange={handlePriceChange}
@@ -147,10 +149,11 @@ function CategoryPage() {
             <option value="XL">Extra Large</option>
           </select>
         </div>
+            </div>
       </aside>
 
-      <main className="flex-1 h-screen  bg-gray-50">
-        <div className=" lg:mx-12 lg:my-12 mb-12">
+      <main className="flex-1 h-full  bg-white w-full">
+        <div className="  lg:my-12 lg:mx-6 mt-[-64] mb-4">
           <Pcard
             products={filteredProducts}
             addToCart={addToCart}

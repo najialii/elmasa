@@ -151,18 +151,14 @@ export default function Checkout() {
     <div className="bg-gray-50  w-full">
 
     <div  className="max-w-full lg:mx-12  h-full  ">
-      <div className=" jsutify-center items-center w-full my-4">
+      <div dir="rtl" className=" flex jsutify-start items-start w-full pt-4">
 
-      {/* <h1 dir="rtl" className="text-4xl font-bold mb-6 text-center text-primary">أكمل طلبك</h1> */}
+      <h1 dir="rtl" className="text-2xl font-bold mb-6 text-center text-primary"> اتمام الشراء</h1> 
 
-
-     
-
-    
 
       </div>
-      <div className="flex lg:gap-12 justify-center max-sm:flex-col    w-full h-full">
-        <div className="">
+      <div className="grid grid-col-1 lg:grid-cols-3 lg:gap-8 justify-center max-sm:flex-col    w-full h-full">
+        <div className="bg-white h-[600px] p-4   shadow-gray-50 border border-gray-200  rounded-md">
         
 
 
@@ -170,56 +166,88 @@ export default function Checkout() {
 
 
 
-          
-     
-        <div className="bg-white  to-white    lg:mt-6 shadow-gray-50 p-6 rounded-md sm:h-64 overflow-auto lg:h-full
-         sticky sm:top-0 lg:min-w-[370px] sm:min-w-[300px] lg:max-h-fit max-h-64">
-            <h2 dir="rtl" className="flex justify-start text-right ">
-            <span dir="rtl" className="text-2xl font-semibold text-primary">العناصر</span>
-          </h2>
-  <div className=" py-8 sm:overflow-auto sm:h-[calc(100vh-60px)]">
-    <ul className="space-y-8 my-8 bg-white   ">
-      {cartItems.map((item) => (
-        <li key={item.id} className="flex shadow-md  px-2 rounded-md bg-white flex-wrap items-center justify-between text-lg gap-4">
-          <div className="w-32 h-28 max-lg:w-24 max-lg:h-24 flex p-3 shrink-0 rounded-md">
-            <img
-              src={(() => {
-                try {
-                  const parsedImg = JSON.parse(item.img); 
-                  const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg;
-                  return imageUrl.startsWith("http")
-                    ? imageUrl
-                    : `${IMG_BASE_URL}/${imageUrl}`;
-                } catch (error) {
-                  console.error("Invalid JSON format for images:", item.img);
-                  return "http://localhost:8000/storage/default-image.jpg";
-                }
-              })()}
-              alt={item.name}
-              className="w-full object-cover h-full rounded-md mb-4"
-            />
-          </div>
+     <div className="w-full ">
+  {/* Header */}
+  <h2 dir="rtl" className="text-right text-xl font-semibold text-gray-900 mb-4">
+    المنتجات
+  </h2>
 
-          <div className="flex-1 flex flex-col justify-between px-4">
-            <p className="text-sm lg:text-base text-gray-800">{item.name}</p>
-            <p className="text-gray-800 text-base">
-              Quantity: <span>{item.quantity}</span>
+  {/* Product List Container */}
+  <div
+    dir="rtl"
+    className="bg-white p-6 rounded-md  lg:max-h-[480px] overflow-scroll h-96 sticky sm:top-0 w-full"
+  >
+    <div className="py-4  sm:overflow-scroll sm:h-[calc(100vh-60px)]">
+      {/* Product List */}
+      <ul className="space-y-2">
+        {cartItems.map((item) => (
+          <li
+            key={item.id}
+            className="flex items-center justify-between gap-4 p-4 bg-white shadow-md rounded-md flex-wrap"
+          >
+            {/* Product Image */}
+            <div className="w-32 h-28 sm:w-24 sm:h-24 flex-shrink-0 rounded-md overflow-hidden">
+              <img
+                src={(() => {
+                  try {
+                    const parsedImg = JSON.parse(item.img);
+                    const imageUrl = Array.isArray(parsedImg)
+                      ? parsedImg[0]
+                      : parsedImg;
+                    return imageUrl.startsWith("http")
+                      ? imageUrl
+                      : `${IMG_BASE_URL}/${imageUrl}`;
+                  } catch (error) {
+                    console.error("Invalid JSON format for images:", item.img);
+                    return "http://localhost:8000/storage/default-image.jpg";
+                  }
+                })()}
+                alt={item.name}
+                className="w-20 h-20 object-cover"
+              />
+            </div>
+
+            {/* Product Details */}
+            <div className="flex-1 flex flex-col justify-between">
+              <p className="text-sm lg:text-base text-gray-800 font-medium">
+                {item.name}
+              </p>
+              <p className="text-gray-600 text-sm">
+                الكمية: <span className="text-gray-800 font-semibold">{item.quantity}</span>
+              </p>
+              <p className="font-semibold text-base text-gray-900">
+                السعر: ${item.price * item.quantity}
+              </p>
+            </div>
+
+            {/* Total Price */}
+            <p className="font-semibold text-lg text-primary">
+              ${item.price * item.quantity}
             </p>
-          </div>
-
-          <p className="font-semibold text-base">${item.price * item.quantity}</p>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </div>
 
-
           
-          <div dir="rtl" className="flex  bg-primary shadow-md shadow-gray-50 p-6 rounded-b-xl justify-between items-center border-t pt-4">
-            <span className="text-2xl text-white font-semibold">الاجمالى</span>
-            <span className="text-secondaryLight text-3xl font-bold" dir="rtl">{total} ج.م</span>
-          </div>
+<div
+  dir="rtl"
+  className="flex flex-col bg-white shadow-md shadow-gray-200 lg:mt-8 p-6 rounded-md border border-gray-200 border-t"
+>
+  <div className="flex justify-between items-center mb-4">
+    <span className="text-base text-gray-900 font-semibold">اجمالي الطلب</span>
+    </div>
+    <div className="flex justify-between items-center gap-2">
+      <span className="text-base text-gray-500 font-semibold">الاجمالي</span>
+      <span className="text-gray-900 font-bold text-base" dir="rtl">
+        {total} ج.م
+      </span>
+    </div>
+  
+</div>
+
         </div>
 
 
@@ -227,7 +255,7 @@ export default function Checkout() {
 
 
 
-          <div dir="rtl" className="bg-white flex flex-col  justify-center mt-6 w-full ">
+          <div dir="rtl" className=" flex flex-col  col-span-2 justify-center mt-6 w-full ">
 
 
 
@@ -237,7 +265,7 @@ export default function Checkout() {
 
        <div className="  justify-center">
 
-       <div
+       {/* <div
 
 className="mb-12 flex bg-b  max-w-screen-lg w-full py-4 px-4  rounded-lg shadow-lg"
 >
@@ -285,158 +313,164 @@ className="mb-12 flex bg-b  max-w-screen-lg w-full py-4 px-4  rounded-lg shadow-
     </div>
     
   </div>
-</div>
+</div> */}
 
 
 </div>
 
-
-
-          <h2 dir="rtl" className="text-2xl font-semibold text-primary mb-4">تفاصيل التسليم</h2>
-<div className="grid gap-4 p-2 grid-cols-2">
-
-          <div>
-            <span className="flex items-center">
-              <Phone size={16} color="#000" />
-              <label className="block text-lg font-medium mb-2">الهاتف</label>
-            </span>
-            <input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary focus:shadow-xl transition-all duration-300 ease-in-out"
-              placeholder="Enter your phone number"
-            />
-          </div>
-
-          <div>
-            <span className="flex items-center">
-              <MapPin size={16} color="#000" />
-              <label className="block text-lg font-medium mb-2">العنوان</label>
-            </span>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="px-4 py-3 bg-gray-100 border border-gray-400 focus:bg-transparent text-gray-800 w-full
-               text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary focus:shadow-xl transition-all duration-300 ease-in-out"
-              placeholder="Enter your address"
-              />
-          </div>
-
-          <div>
-            <label className="block text-lg font-medium mb-2">المدينة</label>
-            <select
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary"
-              >
-              <option value="">Select your city</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.id}>
-                  {city.name}
-                </option>
-              ))}
-            </select>
-          </div>
-      </div>
-              </div>
-
-
-              <div className="  ">
-  <div dir="rtl" className="flex flex-col justify-start items-center p-6 space-x-4">
-
-    <div dir="rtl" className=" justify-start  w-full items-center">
-      <h2 dir="rtl" className= "text-right text-2xl font-semibold text-primary mb-4">
-        طريقة الدفع
+<div className="">
+  <div dir="rtl" className="flex flex-col justify-start items-center p-6  border border-gray-200 bg-white rounded-md shadow-lg">
+    <div dir="rtl" className="flex gap-8 justify-start w-full items-center">
+      <h2 dir="rtl" className="text-right text-xl font-semibold text-gray-900 mb-4">
+        الدفع
+      </h2>
+      <h2 dir="rtl" className="text-right text-sm font-semibold text-gray-500 mb-4">
+        اختر الطريقة الافضل لك
       </h2>
     </div>
-    <div dir="rtl" className="flex flex-col lg:flex-col justify-center gap-6 w-full p-6 rounded-xl  bg-white">
 
-  <label
-    htmlFor="bank-radio"
-    className="cursor-pointer bg-gray-100 shadow-md p-4 lg:w-full w-full rounded-md flex flex-row items-center px-2 justify-between hover:ring-2 hover:ring-primary"
-  >
-    <img src={bank} alt="Bank" className="w-14 h-14 object-cover rounded-full border" />
-    {/* <h2>Bankak</h2> */}
-    <div className="flex items-center mt-2">
-      <input
-        id="bank-radio"
-        type="radio"
-        name="payment-option"
-        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
-      />
-      <span className="ms-2 text-sm font-medium text-gray-900">Select Bank</span>
-    </div>
-  </label>
+    <div dir="rtl" className="flex flex-col lg:flex-row justify-center gap-6 p-6 w-full">
+      <div dir="rtl" className="flex flex-col lg:flex-row gap-4 w-full">
 
-  {/* Option 2: Disabled */}
-  <label
-    htmlFor="hand-radio"
-    className="cursor-pointer bg-gray-100 p-4 lg:w-full w-full rounded-md flex flex-row items-center justify-between  opacity-60 pointer-events-none"
-  >
-    <HandArrowDown size={50} color="#81c6ca" weight="fill" />
-    <div className="flex items-center mt-2">
-    {/* <h2>Option 2</h2> */}
-      <input
-        id="hand-radio"
-        type="radio"
-        name="payment-option"
-        disabled
-        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
-      />
-      <span className="ms-2 text-sm font-medium text-gray-900">Disabled Option</span>
-    </div>
-  </label>
+        {/* Bank Payment Option */}
+        <label 
+          htmlFor="bank-radio" 
+          className="cursor-pointer bg-blue-100 border border-primary shadow-md p-4 lg:w-full w-full rounded-md flex items-center justify-between hover:ring-2 hover:ring-primary transition-all duration-300 ease-in-out"
+        >
+          <div className="flex items-center">
+            <input
+              id="bank-radio"
+              type="radio"
+              name="payment-option"
+              className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
+            />
+            <span className="ms-2 text-base font-bold text-gray-900">ادفع عن طريق بنكك</span>
+          </div>
+          <img src={bank} alt="Bank" className="w-14 h-14 object-cover rounded-full border" />
+        </label>
 
-
-  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-      <div>
-        <label className="block text-lg font-medium mb-2">الاسم الكامل</label>
-        <input
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary focus:shadow-xl transition-all duration-300 ease-in-out"
-          placeholder="Enter your full name"
-        />
-      </div>
-      
-      <div>
-        <label className="block text-lg font-medium mb-2">رقم الحساب</label>
-        <input
-          type="text"
-          value={paymentphone}
-          onChange={(e) => setPaymentphone(e.target.value)}
-          className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary focus:shadow-xl transition-all duration-300 ease-in-out"
-          placeholder="Enter your account number"
-        />
-      </div>
-
-      <div>
-        <label className="block text-lg font-medium mb-2">إيصال الدفع (صورة)</label>
-        <input
-          type="file"
-          onChange={handleImageChange}
-          className="px-4 py-3 mb-4 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary focus:shadow-xl transition-all duration-300 ease-in-out"
-        />
+        {/* Cash on Delivery (Disabled Option) */}
+        <label 
+          htmlFor="hand-radio" 
+          className="cursor-pointer bg-gray-100 p-4 lg:w-full w-full rounded-md flex items-center justify-between opacity-60 pointer-events-none"
+        >
+          <div className="flex items-center">
+            <input
+              id="hand-radio"
+              type="radio"
+              name="payment-option"
+              className="w-5 h-5 text-primary bg-gray-100 border-gray-300 focus:ring-primary focus:ring-2"
+            />
+            <span className="ms-2 text-sm font-medium text-gray-900">كاش عند التوصيل</span>
+          </div>
+        </label>
+        
       </div>
     </div>
+  </div>
 </div>
 
+
+          <div className="flex flex-col gap-6 p-4  bg-white rounded-lg shadow-md shadow-gray-200">
+          <h2 dir="rtl" className="text-xl font-semibold text-gray-900 mb-4">تفاصيل العنوان والتوصيل</h2>
+  {/* Full Name */}
+  <div>
+    <label className="block text-base font-medium mb-2 text-gray-700">الاسم </label>
+    <input
+      type="text"
+      value={fullName}
+      onChange={(e) => setFullName(e.target.value)}
+      className="px-4 py-3 bg-gray-100 focus:bg-white text-gray-800 w-full text-sm rounded-md border border-gray-300 focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+      placeholder="اسمك ثنائي علي الاقل"
+    />
+  </div>
+
+  {/* Account Number */}
+  <div>
+    <label className="block text-base font-medium mb-2 text-gray-700">رقم الحساب</label>
+    <input
+      type="text"
+      value={paymentphone}
+      onChange={(e) => setPaymentphone(e.target.value)}
+      className="px-4 py-3 bg-gray-100 focus:bg-white text-gray-800 w-full text-sm rounded-md border border-gray-300 focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+      placeholder="ادخل رقم الحساب"
+    />
+  </div>
+
+  {/* Payment Receipt */}
+  <div>
+    <label className=" text-base font-medium mb-2 text-gray-700">إيصال الدفع (صورة)</label>
+    <input
+      type="file"
+      onChange={handleImageChange}
+      className="px-4 py-3 bg-gray-100 text-gray-800 w-full text-sm rounded-md border border-gray-300 focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+    />
+  </div>
+
+  {/* Phone Number */}
+  <div>
+    <label className=" text-base font-medium mb-2 flex items-center gap-2 text-gray-700">
+      {/* <Phone size={16} /> */}
+      الهاتف
+    </label>
+    <input
+      type="text"
+      value={phone}
+      onChange={(e) => setPhone(e.target.value)}
+      className="px-4 py-3 bg-gray-100 focus:bg-white text-gray-800 w-full text-sm rounded-md border border-gray-300 focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+      placeholder="Enter your phone number"
+    />
+  </div>
+
+ {/* City Selection */}
+ <div>
+    <label className="block text-base font-medium mb-2 text-gray-700">المدينة</label>
+    <select
+      value={selectedCity}
+      onChange={(e) => setSelectedCity(e.target.value)}
+      className="px-4 py-3 bg-gray-50 border border-gray-300 text-gray-800 w-full text-sm rounded-md focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+    >
+      <option value="">Select your city</option>
+      {cities.map((city) => (
+        <option key={city.id} value={city.id}>
+          {city.name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Address */}
+  <div>
+    <label className=" text-base font-medium mb-2 flex items-center gap-2 text-gray-700">
+      {/* <MapPin size={16} /> */}
+      العنوان بالتفصيل *
+    </label>
+    <textarea
+      type="text"
+      value={address}
+      onChange={(e) => setAddress(e.target.value)}
+      className="px-4 py-3 bg-gray-100 focus:bg-white text-gray-800 w-full text-sm rounded-md border border-gray-300 focus:outline-primary focus:ring-2 focus:ring-primary transition duration-300 ease-in-out"
+      placeholder="Enter your address"
+    />
+  </div>
+
+ 
+</div>
 <div class="flex gap-4 max-md:flex-col w-full">
     
     <button
       onClick={handlePlaceOrder}
-      className={`mt-4 w-full p-3 rounded-lg font-semibold ${phone && address && selectedCity ? 'bg-primary text-white' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
+      className={`mt-4 w-full p-3 rounded-lg font-semibold ${phone && address && selectedCity ? 'bg-primary text-base text-white' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
       disabled={!phone || !address || !selectedCity}
     >
-      Place Order
+      تاكيد الطلب
     </button>
     </div> 
 
-  </div>
-</div>
+              </div>
+
+
+   
 
    
        

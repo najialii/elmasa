@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { CurrencyDollarSimple } from "@phosphor-icons/react";
 import { useAuth } from "../../../../context/authcontext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,Area,Line,  ResponsiveContainer, PieChart, Pie, Cell, Legend,ComposedChart  } from "recharts";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -96,10 +97,32 @@ function Reports() {
   return (
     <div className="mx-12">
       {/* Period */}
-      <div className="w-full flex flex-col justify-center">
+      <div className="w-full py-[80px] flex flex-col justify-center">
         <h1 className="text-2xl font-bold mb-4">Revenue</h1>
-        <form onSubmit={handleSubmit} className="mb-4">
+        <form onSubmit={handleSubmit} className="mb-4 mt-12">
+        <div>
+            {totalRevenue && (
+              <div className="flex  gap-4">
+                <div className="bg-white w-64 p-2 rounded-xl shadow-md flex justify-center flex-col items-center">
+                <CurrencyDollarSimple size={32} weight="fill" />
+                <h2 className="    font-sm">Total Revenue</h2>
+                <h3 className="text-2xl font-extrabold text-primary">
+                {totalRevenue.revenue}
+                </h3>
+                </div>
+
+                <div className="bg-white w-64 p-2 rounded-xl shadow-md flex justify-center flex-col items-center">
+                <h2 className="    font-sm">Total Revenue</h2>
+                <h3 className="text-2xl font-extrabold text-primary">
+                {totalRevenue.orders_number}
+                </h3>
+                </div>
+
+              </div>
+            )}
+          </div>
           <div className="flex space-x-4">
+            
             <div>
               <label className="block text-sm font-medium text-gray-700">Start Date</label>
               <input
@@ -127,14 +150,7 @@ function Reports() {
           >
             Apply
           </button>
-          <div>
-            {totalRevenue && (
-              <div>
-                <h2 className="text-xl font-semibold">Total Revenue: {totalRevenue.revenue}</h2>
-                <h2 className="text-xl font-semibold">Total Orders: {totalRevenue.orders_number}</h2>
-              </div>
-            )}
-          </div>
+       
         </form>
         <div className="bg-white p-4 rounded-xl shadow-md">
         <h2 className="text-xl font-semibold">Revenue Analysis (Same Data Visualization)</h2>
@@ -159,27 +175,27 @@ function Reports() {
       
 
       {/* Revenue Per Category */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 gap-8">
         
-        <div className="bg-white col-span-2 p-4 rounded-xl shadow-md">
+        <div className="bg-white p-4 rounded-xl shadow-md">
 
-        <h2 className="text-xl font-semibold mt-4">Revenue Per Category</h2>
+        <h2 className="text-xl font-semibold mt-4 ">Revenue Per Category</h2>
         {/* <button
           onClick={getRevenuePerCategory}
           className="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-700 transition"
         >
           Refresh Revenue Per Category
         </button> */}
-        <table className="min-w-full bg-white mt-4">
+        <table className="min-w-full  mt-4">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-gray-100">
               <th className="py-2 px-4 border-b">Category</th>
               <th className="py-2 px-4 border-b">Revenue</th>
             </tr>
           </thead>
           <tbody>
             {revenuePerCategory.map((category) => (
-              <tr key={category.id} >
+              <tr key={category.id} className="">
                 <td className="py-2 px-4 border-b">{category.name}</td>
                 <td className="py-2 px-4 border-b">${category.revenue}</td>
               </tr>
@@ -187,7 +203,7 @@ function Reports() {
           </tbody>
         </table>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-md">
+            <div className="bg-primaryLight p-4 rounded-xl shadow-md">
       <h2 className="text-xl font-semibold">Revenue Per Category</h2>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
@@ -214,7 +230,7 @@ function Reports() {
 
 
 
-<div className="grid grid-cols-3 mt-4 gap-8">
+<div className="grid grid-cols-2 mt-4 gap-8 ">
         <div div className="bg-white p-4 rounded-xl shadow-md">
         <h2 className="text-base font-bold mt-4">Revenue Per City</h2>
         {/* <button
@@ -223,7 +239,7 @@ function Reports() {
         >
           Refresh Revenue Per City
         </button> */}
-        <table className="min-w-full bg-white mt-4 rounded-xl ">
+        <table className="min-w-full bg-white  mt-4 rounded-xl ">
           <thead>
             <tr className="bg-gray-200">
               <th className="py-2 px-4 border-b">City</th>
@@ -241,7 +257,7 @@ function Reports() {
         </table>
       </div>
       {/* Revenue Per City a chart */}
-      <div className="bg-white p-2 rounded-xl sahdow-xl w-full col-span-2">
+      <div className="bg-blue-100 p-2 rounded-xl sahdow-md w-ful">
 
           <ResponsiveContainer width="100%" height={300}>
             <BarChart barSize={20} data={revenuePerCity} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -249,7 +265,7 @@ function Reports() {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="revenue" width={10}>
+              <Bar dataKey="revenue" width={2}>
               {revenuePerCity.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={getColor(index)} />
                 ))}

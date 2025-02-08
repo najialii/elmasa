@@ -53,29 +53,29 @@ const OverviewPage = () => {
     { name: "Product D", orders: 60 },
   ];
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch("http://localhost/masa/api/content/items/orders", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setOrders(data);
-        } else {
-          throw new Error("Failed to fetch orders");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost/masa/api/content/items/orders", {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setOrders(data);
+  //       } else {
+  //         throw new Error("Failed to fetch orders");
+  //       }
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchOrders();
-  }, [token]);
+  //   fetchOrders();
+  // }, [token]);
 
   const getTotalRevenueForPeriod = async (start, end) => {
     try {

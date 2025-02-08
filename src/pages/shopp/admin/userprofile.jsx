@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/authcontext";
-import { UserGear, UserCircle } from "@phosphor-icons/react";
+import { UserGear, User  , PencilSimple } from "@phosphor-icons/react";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Uprofile = () => {
@@ -54,8 +54,9 @@ const Uprofile = () => {
 
     
       if (response.status >= 200 && response.status < 300) {
-        console.log("Fetched Data:", response.data);
-        setData(response.data);
+        console.log("Fetched Data:", response.data.data);
+        setData(response.data.data);
+        console.log("hhhhhhh")
       } else {
         throw new Error('Failed to fetch data');
       }
@@ -78,47 +79,63 @@ const Uprofile = () => {
  
 
   return (
-    <div className="container ">
+    <div className=" ">
       {data  ? (
-        <div className="bg-white w-1/2 p-6 rounded-lg shadow-md shadow-gray-50  mx-auto">
-          <div className="flex items-center  mb-6   p-4 rounded-md">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 flex justify-center items-center  rounded-full">
-                <UserCircle size={40} />
+        <div dir="rtl" className="bg w-full p-6 rounded-lg shadow-md shadow-gray-50  mx-auto">
+          <div className="flex flex-col items-center  mb-6   p-4 rounded-md">
+              <div className="w-24 h-24 mb-4 bg-gradient-to-br  from-primary to-primaryLight p-2 flex justify-center items-center  rounded-full">
+                <User weight="fill" color="#fff" size={60}  />
               </div>
-              <h2 className="text-3xl font-bold text-gray-800">Welcome back, {data.name}</h2>
+            <div className="flex items-center space-x-4">
+              <h2 className="text-3xl font-bold text-gray-800">مرحبا بعودتك, {data.name}</h2>
             </div>
           </div>
-          <div className="space-y-4 mb-6 grid grid-cols-2">
-            <div className="flex  text-lg">
-              <span className="text-gray-600">Email:</span>
-              <span className="font-semibold text-gray-800">{data.email}</span>
-            </div>
-            <div className="flex  text-lg">
-              <span className="text-primary">Phone:</span>
-              <span className="font-semibold text-gray-800">{data.phone}</span>
-            </div>
-            <div className="flex  text-lg">
-              <span className="text-primary">Address:</span>
-              <span className="font-semibold text-gray-800">{data.address}</span>
-            </div>
-          </div>
-          <div className="flex justify-end">
+          <div className="space-y-6 p-4 flex flex-col items-start md:items-center">
+
+  <div className="flex flex-col w-full space-y-2">
+    <span className="text-gray-600">البريد الالكتروني</span>
+    <div className="flex justify-between items-center w-full">
+      <span className="font-semibold text-gray-800">{data.email}</span>
+      <PencilSimple size={24}  color="#29008a" />
+    </div>
+  </div>
+
+
+  <div className="flex flex-col w-full space-y-2">
+    <span className="text-primary">رقم الجوال</span>
+    <div className="flex justify-between items-center w-full">
+      <span className="font-semibold text-gray-800">{data.phone}</span>
+      <PencilSimple size={24} color="#29008a" />
+    </div>
+  </div>
+
+  <div className="flex flex-col w-full space-y-2">
+    <span className="text-primary">العنوان</span>
+    <div className="flex justify-between items-center w-full">
+      <span className="font-semibold text-gray-800">{data.address}</span>
+      <PencilSimple size={24} color="#29008a" />
+    </div>
+  </div>
+</div>
+
+          <div dir="rtl" className="flex justify-start mt-6">
             <button
+            dir="rtl"
               onClick={() => setEditModal(true)}
-              className="flex items-center gap-2 px-6 py-2 bg-secondary text-primary font-semibold rounded-lg shadow-md transition duration-300 hover:bg-primary hover:text-white"
+              className="flex items-center gap-2 px-6 py-2 bg-gray-200 text-orange-400 font-semibold rounded-lg shadow-md transition duration-300 hover:bg-primary hover:text-white"
             >
-              <UserGear size={20} /> <span>Edit</span>
+<span>  تعذيل</span>
+              <UserGear size={20} /> 
             </button>
           </div>
 
           {editModal && (
-            <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-96">
+            <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center bg-black bg-opacity-50 z-50 ">
+              <div className="animate-fadeIn bg-white p-6 rounded-lg shadow-lg w-full sm:w-96 mx-4">
                 <h3 className="text-2xl font-bold mb-4">Edit Profile</h3>
                 <form onSubmit={(e) => { e.preventDefault(); handleEdit(); }}>
                   <div className="mb-4">
-                    <label className="block text-lg font-semibold">Name</label>
+                    <label className="block text-lg font-semibold">الاسم</label>
                     <input
                       type="text"
                       value={editName}
@@ -127,7 +144,7 @@ const Uprofile = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-lg font-semibold">Phone</label>
+                    <label className="block text-lg font-semibold">رقم الهاتف</label>
                     <input
                       type="text"
                       value={editPhone}
@@ -136,7 +153,8 @@ const Uprofile = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-lg font-semibold">Address</label>
+                    <label className="block text-lg font-semibold">العنوان 
+                    </label>
                     <input
                       type="text"
                       value={editAddress}
@@ -145,7 +163,7 @@ const Uprofile = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-lg font-semibold">Email</label>
+                    <label className="block text-lg font-semibold">البريد الالكتروني</label>
                     <input
                       type="email"
                       value={editEmail}
@@ -153,19 +171,19 @@ const Uprofile = () => {
                       className="w-full p-2 border rounded-md"
                     />
                   </div>
-                  <div className="flex  mt-6">
+                  <div className="flex justify-between mt-6">
                     <button
                       type="submit"
                       className="bg-primary text-white px-4 py-2 rounded-md"
                     >
-                      Save Changes
+                     حفظ
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditModal(false)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      className="bg-gray-500 text-white px-4 py-2 rounded-md"
                     >
-                      Cancel
+                     &gt; الغاء
                     </button>
                   </div>
                 </form>

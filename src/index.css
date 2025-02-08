@@ -93,3 +93,12 @@
    transform: scaleY(1);
   }
  }
+
+ .zoom-container {
+  position: relative;
+  overflow: hidden; /* Remove if present */
+  width: 100%;
+  height: auto;
+  background-color: white !important;
+  backdrop-filter: blur(10px);
+}

@@ -23,7 +23,7 @@ function AddProduct() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [fileName, setFileName] = useState(null);
-
+const [file, setFile] =useState(null)
   const { token } = useAuth();
 
   useEffect(() => {
@@ -55,6 +55,8 @@ function AddProduct() {
     if (file) {
       setFileName(file.name);
     }
+    console.log("",e.target.files);
+    setFile(URL.createObjectURL(e.target.files[0]));    
   };
 
   const handleSubmit = async (e) => {
@@ -135,20 +137,27 @@ function AddProduct() {
     return <div>Error: {error}</div>;
   }
 
+
+const handelUpdateImg = ()=>{
+  setFile(null)
+}
+
+
+
   return (
-    <div className="container mx-auto py-10">
-      
-      <form onSubmit={handleSubmit} className="bg-white shadow-md  px-8 rounded-md pb-8 mb-4 ">
+    <div className="container mx-auto">
+
+      <form onSubmit={handleSubmit} className="bg-white   px-8 rounded-md pb-8 mb-4 ">
       <div className='grid grid-cols-3 gap-4'>
 
-<div className='flex col-span-2 justify-center items-center w-full h-fit bg-gray-100 rounded-xl p-6'>
+<div className='flex col-span-2 justify-center items-center w-full h-fit bg-white rounded-xl p-6'>
 
 
         <div className=' w-full h-fit p-6 rounded-md shadow-md"'>
 
-        <div className="flex flex-col items-start mt-8 h-fit bg-gray-100 w-full p-6">
+        <div className="flex flex-col items-start mt-8 h-fit bg-white w-full p-6">
   <div className="w-full mb-4">
-    <h2 className="font-black text-lg text-gray-800">Product Details</h2>
+    <h2 className="font-black text-xl mb-4 text-gray-800">Product Details</h2>
   </div>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
@@ -163,7 +172,7 @@ function AddProduct() {
         value={productName}
         onChange={(e) => setProductName(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -178,7 +187,7 @@ function AddProduct() {
         value={expiryDate}
         onChange={(e) => setExpiryDate(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -193,7 +202,7 @@ function AddProduct() {
         onChange={(e) => setProductDescription(e.target.value)}
         required
         rows="4"
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -208,7 +217,7 @@ function AddProduct() {
         value={originCountry}
         onChange={(e) => setOriginCountry(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -223,16 +232,16 @@ function AddProduct() {
         value={size}
         onChange={(e) => setSize(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
   </div>
 </div>
 
 
-            <div className="flex flex-col items-start mt-8 h-fit bg-gray-100 w-full p-6">
+            <div className="flex flex-col items-start mt-8 h-fit bg-white w-full p-6">
   <div className="w-full mb-4">
-    <h2 className="font-black text-lg text-gray-800">Pricing And Stock</h2>
+    <h2 className="font-black text-lx text-gray-800">Pricing And Stock</h2>
   </div>
   
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
@@ -247,7 +256,7 @@ function AddProduct() {
         value={productPrice}
         onChange={(e) => setProductPrice(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -262,7 +271,7 @@ function AddProduct() {
         value={productStock}
         onChange={(e) => setProductStock(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
 
@@ -277,69 +286,15 @@ function AddProduct() {
         value={discount}
         onChange={(e) => setDiscount(e.target.value)}
         required
-        className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
+        className="shadow bg-white focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
       />
     </div>
   </div>
 </div>
 
-
-
-
-        </div>
-
-            </div>
-
-
-
-
-
-          
-
-        <div>
-  
-  <div className="mb-4  bg-gray-100 h-[80%]  rounded-md shadow-md p-6 py-12 flex flex-col justify-center items-center w-full">
-    
-    <label htmlFor="productImage" className="flex font-extrabold w-full my-3 justify-start ml-10 text-gray-700 text-sm  mb-2">
-      Upload Image
-    </label>
-    <div className='flex flex-col items-center justify-center w-full h-full   '>
-
-    <div className="flex flex-col  items-center justify-center   relative border-2 border-dashed border-secondaryLight  p-6 space-y-4">
-      <Image size={200} weight="thin" color="#ADEB76" />
-      <label htmlFor="productImage" className="cursor-pointer text-secondaryDark text-sm font-medium">
-        Upload Image
-      </label>
-      <input
-        type="file"
-        id="productImage"
-        onChange={handleImageChange}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-        />
-    </div>
-    <div className="max-w-md mx-auto   p-6">
-      <h2 className="text-lg font-bold text-gray-800 mb-4">Image Upload Instructions</h2>
-      <ul className="list-disc list-inside text-gray-700 text-sm space-y-2">
-        <li>Accepted file formats: <strong>JPG, PNG, GIF</strong>.</li>
-        <li>Maximum file size: <strong>5MB</strong>.</li>
-        <li>Recommended dimensions: <strong>1200x800 pixels</strong>.</li>
-        <li>Ensure the image is clear and not blurry.</li>
-        <li>Avoid uploading copyrighted or offensive content.</li>
-        <li>Do not use special characters in the file name.</li>
-        <li>Preview your image before submitting.</li>
-      </ul>
-    </div>
-    
-        </div>
-    
-  </div>
-
-
-
-
-<div className="flex flex-col h-[20%] justify-center items-center w-full rounded-md shadow-md mt-8 bg-gray-100  p-6">
+<div className="flex flex-col h-[20%] justify-center items-center w-full rounded-md mt-8 bg-white  p-6">
 <div className='flex justify-start w-full'>
-<h2 className='font-black '>
+<h2 className='font-black texl-xl'>
 Brand And Category
 
 </h2>
@@ -356,7 +311,7 @@ Brand And Category
           value={productBrand}
           onChange={(e) => setProductBrand(e.target.value)}
           required
-          className="shadow-lg bg-gray-100 focus:bg-white appearance-none border rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-lg transition-all duration-300 ease-in-out"
+          className="shadow-lg bg-white focus:bg-white appearance-none border rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-lg transition-all duration-300 ease-in-out"
         >
           <option value="" disabled>
             Select Brand
@@ -385,7 +340,7 @@ Brand And Category
           value={productCategory}
           onChange={(e) => setProductCategory(e.target.value)}
           required
-          className="shadow-lg bg-gray-100 focus:bg-white appearance-none border rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-lg transition-all duration-300 ease-in-out"
+          className="shadow-lg bg-white focus:bg-white appearance-none border rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-lg transition-all duration-300 ease-in-out"
         >
           <option value="" disabled>
             Select Category
@@ -408,19 +363,94 @@ Brand And Category
 </div>
 
 
+        </div>
+
+            </div>
+
+
+
+
+
+          
+
+        <div>
+  
+  <div className="mb-4  bg-white h-[80%]  rounded-md  p-6 py-12 flex flex-col justify-center items-center w-full">
+    
+    <label htmlFor="productImage" className="flex  w-full my-3  justify-start text-gray-700 text-xl font-extrabold  mb-2">
+      Upload Image
+    </label>
+    <div className='flex flex-col items-center justify-center w-full h-full    '>
+
+    <div className="flex flex-col  items-center justify-center   relative border-2  border-dashed border-gray-300 p-6 space-y-4">
+   {file? ( 
+  <div className=''>
+    
+    <div className=''><img src={file}  className=' w-full' alt="" srcset="" />
+   </div>
+   
+   
+   
+   <div className='flex justify-end mt-4'>
+
+   <button onClick={handelUpdateImg} className='bg-orange-400 text-white p-2 rounded-md '>
+    remove image
+   </button>
+   </div>
+  </div>
+  
+  ):(<div className='flex justify-center flex-col items-center'>
+
+<Image size={100} weight="thin" color="#000" />
+<label htmlFor="productImage" className="cursor-pointer text-gray-800 text-sm font-medium">
+  Upload Image
+</label>
+<input
+  type="file"
+  id="productImage"
+  onChange={handleImageChange}
+  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+  />
+  </div>
+)} 
+       
+    </div>
+    <div className="max-w-md mx-auto   p-6">
+      <h2 className="text-lg font-bold text-gray-800 mb-4">Image Upload Instructions</h2>
+      <ul className="list-disc list-inside text-gray-700 text-sm space-y-2">
+        <li>Accepted file formats: <strong>JPG, PNG, GIF</strong>.</li>
+        <li>Maximum file size: <strong>5MB</strong>.</li>
+        <li>Recommended dimensions: <strong>1200x800 pixels</strong>.</li>
+        <li>Ensure the image is clear and not blurry.</li>
+        <li>Avoid uploading copyrighted or offensive content.</li>
+        <li>Do not use special characters in the file name.</li>
+        <li>Preview your image before submitting.</li>
+      </ul>
+    </div>
+    
+        </div>
+    
+  </div>
+
+
+
+
+
+
+
+<div className="flex mt-10 items-center justify-end col w-full">
+          <button
+            type="submit"
+            className="bg-primary text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+            Add Product
+          </button>
+        </div>
   </div>
         </div>
 
 {/* stock  and price  */}
 
-<div className="flex mt-10 items-center justify-end col w-full">
-          <button
-            type="submit"
-            className="bg-primary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-            Add Product
-          </button>
-        </div>
 
         
       </form>

@@ -109,7 +109,7 @@ const DashboardLayout = () => {
   const userLinks = [
     {
       to: "/dashboard/uprofile",
-      label: "Personal Information",
+      label: "حسابي",
       icon: <Info size={32} weight={isActive("/dashboard/uprofile") ? "fill" : "fill"} color={isActive("/dashboard/uprofile") ? "#023C48" : "#a9a9a9"}  />,
     },
     {
@@ -185,7 +185,7 @@ const DashboardLayout = () => {
           </div>
         </div>
 
-        <aside className="hidden md:flex flex-col w-56 bg-gray-50 shadow h-screen">
+        <aside className="hidden  lg:flex flex-col w-56 bg-gray-50 shadow h-screen">
           <div className="p-6">
             <div className="flex gap-4 items-center mb-6">
               <UserCircle size={40} weight="fill" color="#000" />
@@ -223,13 +223,41 @@ const DashboardLayout = () => {
             </ul>
           </div>
         </aside>
-
+        <nav className="fixed lg:hidden overflow-x-scroll bottom-0 left-0 w-full bg-white shadow-lg">
+          <ul className="flex justify-around divide-x-2 mx-auto  items-center py-2">
+            {links.map(({ to, label, icon, onClick }) =>
+              onClick ? (
+                <li key={label} className="text-center">
+                  <button
+                    className="flex flex-col w-32  items-center bg-red-400 pt-2s text-gray-600 hover:text-primary"
+                    onClick={onClick}
+                  >
+                    {icon}
+                    <span className="text-sm">{label}</span>
+                  </button>
+                </li>
+              ) : (
+                <li key={to} className="text-center w-32 ">
+                  <Link
+                    to={to}
+                    className={`flex flex-col items-center ${
+                      isActive(to) ? "text-primary" : "text-gray-600 hover:text-primary"
+                    }`}
+                  >
+                    {icon}
+                    <span className="text-sm">{label}</span>
+                  </Link>
+                </li>
+              )
+            )}
+          </ul>
+        </nav>
  
         <main className="flex-1 flex flex-col w-full p-4">
           <div className="mt-0 my-6">
           <button
           onClick={() => setSidebarOpen(!isSidebarOpen)}
-          className="md:hidden flex top-4 left-4 z-50 p-2 bg-primary text-white rounded-md shadow-md"
+          className="hidden  top-4 left-4 z-50 p-2 bg-primary text-white rounded-md shadow-md"
         >
           { <List size={28} weight="bold" /> }
         </button>

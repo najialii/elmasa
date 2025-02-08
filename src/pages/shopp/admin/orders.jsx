@@ -142,7 +142,7 @@ if(!effectRan.current){
    
    
    
-        <form className=" flex gap-4 over items-center my-10" action="">
+        <form className=" flex gap-4 over items-center my-10 " action="">
           <input
             type="text"
             placeholder="search "
@@ -151,7 +151,7 @@ if(!effectRan.current){
             className="shadow bg-gray-100 focus:bg-white appearance-none border rounded w-56 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-secondaryLight focus:shadow-xl transition-all duration-300 ease-in-out"
           />
           <div>
-            <button className="bg-primary text-white p-2 rounded-md">
+            <button className="bg-primary text-white p-2 w-32 rounded-md">
               search
             </button>
           </div>
@@ -160,23 +160,23 @@ if(!effectRan.current){
       {error && <p className="text-red-500">{error}</p>}
 
       {view === "viewOrders" && (
-        <div className="overflow-x-scroll lg:overflow-x-scroll w-full lg:max-h-[450px] rounded-lg shadow-lg">
-          <table className="min-w-full  table-auto border-collapse border border-gray-300">
-            <thead className="bg-gray-100 sticky top-0 text-gray-800 text-sm">
+        <div className="overflow-x-scroll max-h-[450px] rounded-lg shadow-lg lg:mx-12">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-100 sticky top-0 text-gray-800 text-sm ">
               <tr>
-                <th className="border px-6 py-3 text-left ">Date</th>
-                <th className="border px-6 py-3 text-left "> Name</th>
-                <th className="border px-6 py-3 text-left ">Total</th>
-                <th className="border px-6 py-3 text-left ">city</th>
-                <th className="border px-6 py-3 text-left ">Status</th>
-                <th className="border px-6 py-3 text-left ">Action</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Date</th>
+                <th className="px-4 py-4 text-sm text-gray-800"> Name</th>
+                <th className="px-4 py-4 text-sm text-gray-800 ">Total</th>
+                <th className="px-4 py-4 text-sm text-gray-800 ">city</th>
+                <th className="px-4 py-4 text-sm text-gray-800 ">Status</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
               {filteredOrders.map((order) => (
                 <React.Fragment key={order.id}>
-                  <tr className="hover:bg-gray-50 transition-colors duration-200">
-                    <td className="border px-6 py-4 text-sm font-medium text-gray-700">
+                  <tr className="hover:bg-gray-50 transition-colors duration-200 ">
+                    <td className="px-4 py-4 text-sm text-gray-800">
                       {new Date(order.created_at).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
@@ -187,9 +187,9 @@ if(!effectRan.current){
                         hour12: true,
                       })}
                     </td>
-                    <td className="border px-6 py-4 text-sm font-medium text-gray-700">{order.user.name}</td>
-                    <td className="border px-6 py-4 text-sm font-medium text-gray-700">${order.total_price}</td>
-                    <td className="border px-6 py-4 text-sm font-medium text-gray-700">${order.city.name}</td>
+                    <td className="px-4 py-4 text-sm text-gray-800">{order.user.name}</td>
+                    <td className="px-4 py-4 text-sm text-gray-800">${order.total_price}</td>
+                    <td className="px-4 py-4 text-sm text-gray-800">${order.city.name}</td>
                     <td>
                       <select
                         value={order.status}
@@ -206,7 +206,7 @@ if(!effectRan.current){
                         <option value="deleted">delete</option>
                       </select>
                     </td>
-                    <td className="border px-6 py-4 text-sm font-medium">
+                    <td className="px-4 py-4 text-sm text-gray-800">
                       <button
                         className=" flex justify-center items-center"
                         onClick={() => setSelectedOrder(order)}
@@ -250,24 +250,24 @@ if(!effectRan.current){
       </div>
       {view === "manageOrders" && (
         <div className="overflow-x-auto rounded-lg shadow-lg">
-          <table className="min-w-full table-auto border-collapse border border-gray-300">
+          <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-primary text-white">
-              <tr>
-                <th className="border px-6 py-3 text-left font-semibold">Order ID</th>
-                <th className="border px-6 py-3 text-left font-semibold">Customer Name</th>
-                <th className="border px-6 py-3 text-left font-semibold">Total</th>
-                <th className="border px-6 py-3 text-left font-semibold">Status</th>
-                <th className="border px-6 py-3 text-left font-semibold">Action</th>
-                <th className="border px-6 py-3 text-left font-semibold">Action</th>
+              <tr className="hover:bg-gray-50 transition-colors duration-200">
+                <th className="px-4 py-4 text-sm text-gray-800  ">Order ID</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Customer Name</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Total</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Status</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Action</th>
+                <th className="px-4 py-4 text-sm text-gray-800">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200 whitespace-nowrap">
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="border px-6 py-4 text-sm font-medium text-gray-700">{order.order_number}</td>
-                  <td className="border px-6 py-4 text-sm font-medium text-gray-700">{order.customername}</td>
-                  <td className="border px-6 py-4 text-sm font-medium text-gray-700">${order.total_price}</td>
-                  <td className="border px-6 py-4 text-sm font-medium text-gray-700">
+                  <td className="px-4 py-4 text-sm text-gray-800">{order.order_number}</td>
+                  <td className="px-4 py-4 text-sm text-gray-800">{order.customername}</td>
+                  <td className="px-4 py-4 text-sm text-gray-800">${order.total_price}</td>
+                  <td className="px-4 py-4 text-sm text-gray-800">
                     <select
                       value={order.status}
                       onChange={(e) => updateOrderStatus(order.id, e.target.value)}
@@ -293,10 +293,10 @@ if(!effectRan.current){
       )}
 
       {selectedOrder && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-md shadow-gray-50 w-full max-w-lg">
+        <div className="fixed  inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <div  className="fixed bottom-0 lg:right-0 bg-gradient-to-t from-blue-100 max-h-[500px] h-[500px] to-white p-6 rounded-lg shadow-md shadow-gray-50 w-full max-w-lg">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Order Details</h2>
+              <h2 className="text-xl font-semibold">تفاصيل الطلب</h2>
               <p className="flex flex-col">
                 <span
                   className={`flex items-center px-2 py-1 rounded-md ${
@@ -320,14 +320,16 @@ if(!effectRan.current){
                 </span>
               </p>
             </div>
-            <div className="mt-4 flex flex-col justify-center">
-              <div className="grid grid-cols-2 justify-center items-center gap-4">
+            <div className="mt-4 flex flex-col  justify-center">
+              <div className="grid grid-cols-2 border p-2 border-secondary bg-lime-100 justify-center items-center gap-4">
                 <p className="flex flex-col text-sm"><strong>Order Number:</strong> {selectedOrder.order_number}</p>
                 <p className="flex flex-col text-sm"><strong>Phone Number:</strong> {selectedOrder.phone}</p>
                 <p className="flex flex-col text-sm"><strong>Customer Name:</strong> {selectedOrder.user.name}</p>
                 <p className="flex flex-col text-sm"><strong>city:</strong> ${selectedOrder.city.name}</p>
                 <p className="flex flex-col text-sm"><strong>Address</strong> ${selectedOrder.address}</p>
               </div>
+
+
               <div className="flex flex-col mt-4">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Items</h3>
@@ -357,12 +359,14 @@ if(!effectRan.current){
                   <p className="text-gray-600 mt-4">No items found for this order.</p>
                 )}
               </div>
+              <div className="sticky bottom-0 w-full flex justify-start">
               <button
                 className="mt-4 px-4 py-2 rounded-md bg-gray-500 text-white"
                 onClick={closeModal}
               >
                 Close
               </button>
+              </div>
             </div>
           </div>
         </div>

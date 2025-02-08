@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,32 +23,41 @@ const Login = () => {
   };
 
   return (
-    <div className="max-h-full flex justify-center items-center bg-gray-100 px-4">
-      <div className="w-full my-20 max-w-md sm:max-w-xl bg-white shadow-md shadow-gray-50 p-8 rounded-lg space-y-6">
-        <div className="flex justify-between items-center mb-6">
-          <Link to="/" className="flex items-center text-primary font-bold text-lg gap-2">
+    <div className="max-h-full h-full flex flex-col justify-center items-center bg-white px-4">
+        <div className="flex justify-center flex-col items-center py-6">
+        <h2 className="text-3xl text-primary font-black">مرحبًا بعودتك</h2>
+        <p className="text-xl text-primary font-black p-2">
+        قم بتسجيل الدخول إلى حسابك
+</p>
+      </div>
+      <div className="w-full  max-w-md  bg-white shadow-md shadow-gray-50 p-8 rounded-lg ">
+        <div className="flex justify-center flex-col items-center mb-6">
+          {/* <Link to="/" className="flex items-center text-primary font-bold text-lg gap-2">
             <ArrowLeft size={20} color="#027384" /> Home
-          </Link>
-          <img src={logo} className="w-16 h-16" alt="Elmasa Logo" />
+          </Link> */}
+          {/* <img src={logo} className="w-20 h-20" alt="Elmasa Logo" /> */}
+          <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
+          تسجيل الدخول
+          </h1>
         </div>
         
-        <div className="text-center space-y-2">
+        {/* <div className="text-center space-y-2">
           <h2 className="text-xl font-semibold text-gray-700">Sign in</h2>
           <h2 className="text-3xl text-primary font-bold">Welcome back, Elmasa Customer</h2>
           <h2 className="text-base text-gray-600">Sign in to your account</h2>
-        </div>
+        </div> */}
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form dir="rtl" onSubmit={handleSubmit} className="">
           <div className="mb-4">
-            <label htmlFor="email" className="flex items-center text-sm font-medium text-gray-700">
-              <EnvelopeSimple size={16} color="#000" /> Email
+            <label htmlFor="email" className="flex gap-2 items-center text-sm font-medium mb-2 text-gray-700">
+              <EnvelopeSimple size={20} color="#000" /> البريد الإلكتروني
             </label>
             <input
               type="email"
               id="email"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        className="shadow bg-gray-100 mb-4 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primarLight focus:shadow-xl transition-all duration-300 ease-in-out"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
@@ -55,29 +65,29 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="password" className="flex items-center text-sm font-medium text-gray-700">
-              <LockSimpleOpen size={16} color="#000" /> Password
+            <label htmlFor="password" className="flex gap-2 items-center mb-2 text-sm font-medium text-gray-700">
+              <LockSimpleOpen size={20} color="#000" />  كلمة المرور
             </label>
             <input
               type="password"
               id="password"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        className="shadow bg-gray-100 mb-4 focus:bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primarLight focus:shadow-xl transition-all duration-300 ease-in-out"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
             />
-            <div className="flex justify-end">
-              <a className="text-primary underline my-2 hover:text-primary hover:underline cursor-pointer">
+            <div className="flex justify-end ">
+              {/* <a dis className="text-primary underline my-2 hover:text-primary hover:underline cursor-pointer">
                 Forgot password?
-              </a>
+              </a> */}
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-primary text-white p-2 rounded hover:bg-secondary transition duration-300"
+            className="w-full bg-primary text-white p-2 rounded  transition duration-300"
           >
-            Sign in
+            Sign In
           </button>
         </form>
 
@@ -87,22 +97,37 @@ const Login = () => {
           <div className="border-t border-gray-200 flex-grow"></div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4 text-sm text-gray-600">
-          <Link to="/signup" className="text-primary font-semibold text-sm">
-            New? You do not have an Elmasa account? <span className="font-bold text-primary">Register</span>
-          </Link>
-        </div>
+        <div dir="rtl" className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4 px-4 text-sm text-gray-700">
+  <span  className="text-gray-600">
+  جديد؟ ليس لديك حساب في الماسة؟
+  </span>
+  <Link
+    to="/signup"
+    className="text-primary bg-secondaryLight lg:w-24 text-center w-full text-lg font-bold hover:bg-secondary-dark px-4 py-2 rounded-md transition-all"
+  >
+    تسجيل 
+  </Link>
+</div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4 text-sm text-gray-600">
-          <Link to="/signup" className="flex items-center gap-2 text-primary">
-            <span>Contact us via</span>
-            <span className="flex items-center gap-2 font-bold text-white bg-green-500 px-4 py-2 rounded-lg">
-              <WhatsappLogo size={24} color="#fff" />
-              Whatsapp
-            </span>
-            <span>for more assistance</span>
-          </Link>
-        </div>
+<div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4 mt-4 px-4 text-sm text-gray-700 text-center sm:text-left">
+  <Link
+    to="/signup"
+    className="flex flex-wrap items-center gap-2 justify-center sm:justify-start text-gray-600 hover:text-gray-800 transition-all"
+  >
+    <div className="flex lg:flex-row flex-col items-center gap-2">
+    <span>للمزيد من المساعدة
+    تواصل معنا عبر
+    </span>
+
+    <span className="flex items-center w-24 gap-2 font-bold text-white bg-green-500 hover:bg-green-600 px-4 py-1.5 rounded-lg transition-all">
+      <WhatsappLogo size={32} weight="bold" color="#fff" />
+      واتساب
+    </span>
+    </div>
+  </Link>
+</div>
+
+
       </div>
     </div>
   );

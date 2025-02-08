@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/authcontext"; 
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { EyeClosed, ArrowLeft , ArrowRight } from "@phosphor-icons/react";
+import { EyeClosed, ArrowLeft , ArrowRight,Clock } from "@phosphor-icons/react";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const VITE_IMAGE_URL = import.meta.env.VITE_IMAGE_STORAGE_URL
+
 export default function OrderHistory() {
   const { user, token } = useAuth();  
   const [orders, setOrders] = useState([]); 
@@ -13,8 +15,7 @@ export default function OrderHistory() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentpage, setCurrentPage] = useState(1)
   const [disabledButton, setDisabledButton] = useState(false)
-
-  console.log(selectedOrder)
+  const effectRan = useRef(false)
 
   const openModal = (order) => {
     setSelectedOrder(order);
@@ -34,53 +35,61 @@ export default function OrderHistory() {
     setCurrentPage((prevPage)=> prevPage - 1) 
   }
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/order/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/order/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (response.status === 200) {
-          const result = response.data;
-          console.log(result)
-          if (result && result.data && Array.isArray(result.data.data)) {
-            setOrders(result.data.data);
-          } else {
-            setErrorMessage("Failed to fetch orders.");
-          }
+      if (response.status === 200) {
+        const result = response.data;
+        console.log("hhha",response.data)
+        console.log("foff",result)
+        if (result && result.data && Array.isArray(result.data.data)) {
+          setOrders(result.data.data);
+          console.log(result.data.data)
         } else {
-          const errorMessage = response.statusText;
-          setErrorMessage("Failed to fetch orders");
-          toast.error("🦄 " + errorMessage, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-          });
+          setErrorMessage("Failed to fetch orders.");
         }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        setErrorMessage("An error occurred while fetching the orders.");
+      } else {
+        const errorMessage = response.statusText;
+        setErrorMessage("Failed to fetch orders");
+        toast.error("🦄 " + errorMessage, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        });
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      setErrorMessage("An error occurred while fetching the orders.");
+    }
+  };
+  useEffect(() => {
+   if (!effectRan.current) {
+    effectRan.current = true 
     fetchOrders();
+   }
+
   }, [currentpage, token]);
 
-  if(orders.length === 0){
-    console.log("nbasasdajfosh")
-  }
 
   return (
-    <div className="container w-full py-8 px-4">
+    <div className="container w-full  pt-4 ">
+      <div dir="rtl" className="pb-6">
+        <h3 className="text-3xl">
+          الطلبات
+        </h3>
+      </div>
       {errorMessage ? (
         <p className="text-red-500 text-center text-xl">{errorMessage}</p>
       ) : Array.isArray(orders) && orders.length === 0 ? (
@@ -133,120 +142,104 @@ export default function OrderHistory() {
       )}
 
       {isModalOpen && selectedOrder && (
-        <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className=" bg-white p-6 rounded-lg max-w-md w-full">
-            <div className="flex justify-between">
+      <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center bg-black bg-opacity-50 z-50">
+      <div
+        dir="rtl"
+        className="fixed max-h-[600px] bottom-0 lg:right-0 bg-gradient-to-t from-blue-100 to-white p-6 rounded-t-lg w-full max-w-md  shadow-lg overflow-y-auto "
+      >
+      
+        <div className=" w-full p-2 border-b border-primary">
 
-
-<div className="flex flex-col w-full max-h-12">
-
-            <h2 className="text-xl  font-bold mb-4 text-primary">Full Order Details</h2>
-</div>
-            <button
-            
-            className={`px-2 py-2 text-white rounded-md font-bold text-sm ${
+        <div className="text-center mb-4">
+          <h2 className="text-3xl font-extrabold text-primary">تفاصيل الطلب</h2>
+        </div>
+    
+       
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="flex items-center gap-1 font-medium text-gray-500">
+          <Clock size={18} weight="fill" />   {new Date(selectedOrder.created_at).toLocaleDateString()}
+          </h2>
+          <button
+            className={`px-4 py-2 text-white rounded-md font-bold text-sm transition-all ${
               selectedOrder.status === "delivered"
-                ? "bg-green-400 hover:bg-green-500 "
+                ? "bg-green-500 hover:bg-green-600"
                 : selectedOrder.status === "paid"
-                ? "bg-orange-400 hover:bg-orange-500"
+                ? "bg-orange-500 hover:bg-orange-600"
                 : "bg-gray-400 hover:bg-gray-500"
-            }`} >             
-              {selectedOrder.status}
-              
-              </button>
-            </div>
-                
+            }`}
+          >
+            {selectedOrder.status}
+          </button>
+        </div>
+              </div>
+    
+  <div className="">
 
-            <ul className="mt-4 lg:max-h-64 max-h-56 overflow-y-scroll">
-  {selectedOrder.items && selectedOrder.items.map((item) => (
-    <li key={item.id} className="bg-white hover:bg-gray-100 rounded-md shadow-md my-2 max-h-20 h-20 py-2 px-4 flex items-center justify-between">
-      <div className="flex items-center justify-center w-1/4">
-      <img
-  src={
-    (() => {
-      try {
-        const parsedImg = JSON.parse(item.img); 
-        const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg; 
-        return imageUrl.startsWith("http")
-          ? imageUrl
-          : `http://localhost:8000/storage/${imageUrl}`;
-      } catch (error) {
-        console.error("Invalid JSON format for images:", item.img);
-        return "http://localhost:8000/storage/default-image.jpg"; 
-      }
-    })()
-  }
-  alt={item.name}
-  className="w-20 rounded-md mb-4"
-/>
-          
-      </div>
-      
-      <div className="flex flex-col items-center justify-center w-1/2">
-        <span className="text-xl font-medium">{item.product.name}</span>
-   
-      </div>
-      
-      <div className="flex flex-col items-end justify-center w-1/4">
-        <span className="text-xl font-semibold">{item.price}</span>
-        <span className="text-sm">Qty: {item.qty}</span>
-        {/* <span className="text-sm font-semibold">Total: ${item.qty * item.price}</span> */}
-      </div>
-    </li>
-  ))}
-</ul>
-
-
-            <div className="text-gray-700  items-center justify-around">
-            
-
-            <div className="mt-6">
-  {/* Order Date */}
-  <p className="flex justify-between ">
-    <span className="text-sm font-medium text-gray-700">Order Date</span>
-    <span className="text-xl font-extrabold text-gray-900">
-      {new Date(selectedOrder.created_at).toLocaleDateString()}
-    </span>
-  </p>
-
-  {/* Address */}
-  <p className="text-gray-900 flex justify-between text-sm mb-6 mt-4">
-    <span className="text-sm font-medium text-gray-700">Address</span>
-    <span className="text-xl font-extrabold text-gray-900">
-      {selectedOrder.address}
-    </span>
-  </p>
-
-  {/* Phone Number */}
-  <p className="text-gray-900 flex justify-between text-sm">
-    <span className="text-sm font-medium text-gray-700">Phone Number</span>
-    <span className="text-xl font-extrabold text-gray-900">
-      {selectedOrder.order_number}
-    </span>
-  </p>
-</div>
-
-            </div>
-
-            <div className="mt-2 flex justify-between">
-
-<div className="font-medium ">Order Total</div>
-<p className="text-3xl text-primary font-extrabold ">
-${selectedOrder.total_price}
-</p>
- 
-</div>
-            <div className="flex justify-end w-full mt-4">
-
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4 w-32 sm:w-auto"
-              onClick={closeModal}
+        <ul className="space-y-4 max-h-32 overflow-y-auto">
+          {selectedOrder.items?.map((item) => (
+            <li
+              key={item.id}
+              className="bg-white mt-2 hover:bg-gray-200 rounded-md shadow-md p-4 flex items-center justify-between"
             >
-              Close
-            </button>
-            </div>
+               <img
+                src={
+                  (() => {
+                    try {
+                      const parsedImg = JSON.parse(item.product.img);
+                      const imageUrl = Array.isArray(parsedImg) ? parsedImg[0] : parsedImg;
+                      return imageUrl.startsWith("http")
+                        ? imageUrl
+                        : `${VITE_IMAGE_URL}/${imageUrl}`;
+                    } catch (error) {
+                      console.error("Invalid JSON format for images:", item.img);
+                      return "http://localhost:8000/storage/default-image.jpg";
+                    }
+                  })()
+                }
+                alt={item.product.name}
+                className="w-20 h-20 rounded-md"
+              />
+              <div className="flex  items-center w-2/3">
+                <span className="text-sm font-medium">{item.product.name}</span>
+              </div>
+              <div className="flex flex-col items-start gap-2 ">
+                <span className="text-sm font-semibold">{item.price} ج.م</span>
+                <span className="text-xs text-gray-600">Qty: {item.qty}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 border border-secondary bg-lime-200 p-4 rounded-md">
+          <h3 className="text-lg font-bold">عنوان التوصيل</h3>
+          <p className="text-sm text-gray-700">{selectedOrder.address}</p>
+        </div>
+        <div className="">
+          <h3 className="mt-4 text-lg font-bold"> رقم الجوال</h3>
+          <p className="text-lg text-gray-700">{selectedOrder.phone}</p>
+        </div>
+    
+        
+        <div className="mt-6 flex justify-between items-center text-lg">
+          <span className="font-medium">إجمالي الطلب</span>
+          <span className="text-2xl font-extrabold text-primary">
+            ${selectedOrder.total_price}
+          </span>
+        </div>
+    
+        {/* Close Button */}
+        <div className="flex justify-end mt-4">
+          <button
+            className="bg-gray-400 text-white px-4 py-2 rounded"
+            onClick={closeModal}
+          >
+           <span>&#x25BC;</span> إغلاق
+          </button>
           </div>
         </div>
+      </div>
+    </div>
+    
       )}
 
       <div className="flex justify-center mt-6 text-sm items-center">

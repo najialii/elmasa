@@ -1,75 +1,114 @@
 import React from 'react';
-import { WhatsappLogo,ArrowRight,Envelope } from "@phosphor-icons/react";
-
+import { WhatsappLogo,MapPin,Envelope } from "@phosphor-icons/react";
+import logo from "../assets/imgs/masa.svg";
 const Footer = () => (
   <>
-   
-<section className="w-screen py-6 mb-0 mt-16 bg-secondaryLight text-center">
-  <div dir='rtl' className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-6xl">
-    
-    <div className="flex flex-col items-center justify-center">
-      <h2 className="text-5xl font-extrabold text-primary">هنا للمساعدة</h2>
-      <p className="mt-2 font-bold text-primary">
-      اختر  أي من قنوات الدعم التالي
+   <section className="w-full py-2 mb-0 mt-16 bg-white  border-b border-t border-gray-200 text-center">
+  <div className="flex flex-col lg:flex-row justify-between items-center w-full mb-8">
+    {/* First Section (Mobile) */}
+    {/* <div className="lg:hidden mb-4 flex flex-col items-center justify-center">
+      <h2 className="text-base  font-extrabold lg:text-gray-900">هنا للمساعدة</h2>
+      <p className="mt-2 font-bold text-white">
+        اختر أي من قنوات الدعم التالي
       </p>
-    </div>
+    </div> */}
 
+    {/* Grid Section */}
+    <div dir="rtl" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-8 lg:px-16 w-full">
+  {/* Address Section */}
+  <div className="flex flex-col items-center justify-center gap-2">
+    <h2 className="text-lg sm:text-xl lg:text-base text-gray-900">العنوان</h2>
+    <span className="bg-blue-200 rounded-full p-3">
+      <MapPin size={22} />
+    </span>
+  </div>
 
-
-
-    <div className="flex flex-col items-center justify-center  bg-secondaryLight rounded-lg py-4">
+  {/* Email Support */}
+  <div className="flex items-center justify-center rounded-lg py-4 w-full transition-all duration-300 hover:scale-105">
     <div>
+      <span className="hidden lg:flex flex-col items-center gap-2">
+        <h2 className="text-gray-900 text-sm">الدعم عبر البريد الإلكتروني</h2>
+        <span className="bg-blue-100 rounded-full p-3">
+          <Envelope size={22} weight="light" color="#027384" />
+        </span>
+        <h2 className="text-lg text-primary font-extrabold">info@elmasa.com</h2>
+      </span>
+      <span className="flex lg:hidden items-center gap-2">
+        <Envelope size={24} weight="light" color="#027384" />
+        <h2 className="text-lg text-primary font-extrabold">البريد</h2>
+      </span>
+    </div>
+  </div>
 
-      <h2 className=" text-gray-800 text-sm ">الدعم عبر البريد الإلكتروني</h2>
-     <span className='flex items-center gap-3 '>
-       <Envelope size={48} weight="light" color="#027384" /> <h2 className='text-3xl text-primary font-extrabold'> info@elmasa.com</h2> </span>
-    </div>
-    </div>
-    <div className="flex flex-col items-center justify-center  bg-secondaryLight rounded-lg py-4">
+  {/* WhatsApp Support */}
+  <div className="flex items-center justify-center rounded-lg py-4 w-full transition-all duration-300 hover:scale-105">
     <div>
+      <span className="hidden lg:flex flex-col items-center gap-2">
+        <h2 className="text-gray-800 text-sm">هل تفضل الدردشة؟</h2>
+        <span className="bg-blue-100 rounded-full p-3">
+          <WhatsappLogo size={22} weight="light" color="#027384" />
+        </span>
+        <h2 className="text-lg text-primary font-extrabold">Whatsapp</h2>
+      </span>
+      <span className="flex lg:hidden items-center gap-2">
+        <WhatsappLogo size={24} weight="light" color="#027384" />
+        <h2 className="text-lg text-primary font-extrabold">واتساب</h2>
+      </span>
+    </div>
+  </div>
+</div>
 
-      <h2 className=" text-gray-800 text-sm ">هل تفضل الدردشة؟</h2>
-     <span className='flex items-center gap-3 '>
-       <WhatsappLogo size={48} weight="light" color="#027384" /> <h2 className='text-3xl text-primary font-extrabold'> Whatsapp</h2> </span>
-    </div>
-    </div>
   </div>
 </section>
 
-        <footer class="bg-primary p-8 font-sans tracking-wide">
-      <div class="max-w-screen-xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div class="sm:col-span-2 max-w-sm">
-            <h4 class="text-base font-semibold mb-6 text-secondary">About Us</h4>
-            <p class="text-white text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean gravida, mi eu
-              pulvinar cursus, sem elit interdum mauris.</p>
-          </div>
 
-          <div>
-            <h4 class="text-base font-semibold mb-6 text-secondary">Services</h4>
-            <ul class="space-y-3">
-              <li><a href="javascript:void(0)" class="text-white hover:text-white text-sm">Web Development</a></li>
-              <li><a href="javascript:void(0)" class="text-white hover:text-white text-sm">Mobile App Development</a>
-              </li>
-              <li><a href="javascript:void(0)" class="text-white hover:text-white text-sm">UI/UX Design</a></li>
-              <li><a href="javascript:void(0)" class="text-white hover:text-white text-sm">Digital Marketing</a></li>
-            </ul>
-          </div>
 
-          <div class="space-y-3">
-            <h4 class="text-base font-semibold mb-6 text-secondary">Contact Us</h4>
-            <p class="text-white text-sm">123 Main Street</p>
-            <p class="text-white text-sm">City, State, Country</p>
-            <p class="text-white text-sm">contact@example.com</p>
-            <p class="text-white text-sm">+1 234 567 890</p>
-          </div>
-        </div>
-
-        <div class="mt-12">
-          <p class='text-white text-sm'>© elmasafoods. All rights reserved.</p>
-        </div>
+<footer dir='rtl' className="bg-white p-8 border-b border-gray-200 tracking-wide lg:mx-16">
+  <div className="">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="sm:col-span-2 max-w-sm">
+        <h4 className="text-base font-semibold mb-4 text-gray-900 text-right">من نحن</h4>
+        <p className="text-gray-500 text-sm text-right">
+          نحن نقدم خدمات مبتكرة في تطوير الويب، تصميم تجربة المستخدم، والتسويق الرقمي. كل شيء يتم مع مراعاة الجودة والاحترافية.
+        </p>
       </div>
-    </footer>
+
+      <div>
+        <h4 className="text-base font-semibold mb-4 text-gray-900 text-right">خدماتنا</h4>
+        <ul className="space-y-3 text-gray-500 text-right">
+          <li><a href="javascript:void(0)" className=" text-sm">تطوير المواقع الإلكترونية</a></li>
+          <li><a href="javascript:void(0)" className=" text-sm">تطوير التطبيقات الجوالة</a></li>
+          <li><a href="javascript:void(0)" className=" text-sm">تصميم واجهات المستخدم وتجربة المستخدم</a></li>
+          <li><a href="javascript:void(0)" className=" text-sm">التسويق الرقمي</a></li>
+        </ul>
+      </div>
+      <div className="space-y-3 w-full text-right">
+  <h2 className="text-base font-extrabold text-gray-900">تواصل معنا</h2>
+  
+  <input 
+    type="text" 
+    className="rounded-md bg-gray-200 placeholder:text-sm p-2 w-80 mx-auto" 
+    placeholder="أدخل بريدك الإلكتروني" 
+  />
+  
+  <button className="bg-primary text-white text-xs rounded-md p-3 w-80 mx-auto">
+    اشترك الآن
+  </button>
+</div>
+
+
+    </div>
+
+  </div>
+</footer>
+    <div className="my-4 text-gray-500 flex justify-center items-center">
+      <p className=' text-sm'> <span className="">
+      © Elmasa Foods.
+        </span>  جميع الحقوق محفوظة.</p> <a href="javascript:void(0)" className="max-sm:hidden">
+                      <img src={logo} alt="logo" className="w-[88px] h-[40px]" />
+                    </a>
+    </div>
+
   </>
 );
 

@@ -48,16 +48,7 @@ export default {
       fontFamily: {
         cairo: ['Cairo', 'sans-serif'],
       },
-      fontWeight: {
-        'extra-light': 100,
-        'light': 200,
-        'regular': 300,
-        'medium': 500,
-        'semi-bold': 600,
-        'bold': 700,
-        'extra-bold': 1200,
-        'black': 1800,
-      },
+   
       keyframes: {
         marquee: {
           "0%": { transform: "translateX(0)" },
